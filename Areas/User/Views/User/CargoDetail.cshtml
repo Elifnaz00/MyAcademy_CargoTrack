@@ -1,0 +1,384 @@
+﻿@using DtoLayer.DTOs.CargoDtos
+@using EntityLayer.Entities.Enums
+@model CargoDetailDto
+
+@{
+    ViewData["Title"] = "Kargo Detayı";
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
+}
+
+@functions {
+    public string GetCargoStatusText(CargoStatus status)
+    {
+        return status switch
+        {
+            CargoStatus.Created => "Gönderi Alındı",
+            CargoStatus.AtOriginBranch => "Çıkış Şubesinde",
+            CargoStatus.InTransferCenter => "Transfer Merkezinde",
+            CargoStatus.AtDestinationBranch => "Varış Şubesinde",
+            CargoStatus.OutForDelivery => "Dağıtımda",
+            CargoStatus.Delivered => "Teslim Edildi",
+            CargoStatus.DeliveryFailed => "Teslimat Başarısız",
+            CargoStatus.ReturnInProgress => "İade Sürecinde",
+            CargoStatus.ReturnedToSender => "Göndericiye İade Edildi",
+            _ => "Bilinmeyen Durum"
+        };
+    }
+
+    public string GetCargoTypeText(CargoType type)
+    {
+        return type switch
+        {
+			CargoType.Normal => "Normal",
+            CargoType.Fragile => "Kırılabilir",
+            CargoType.Heavy => "Ağır",
+            _ => "Belirtilmemiş"
+        };
+    }
+}
+
+<main class="ml-64 mt-16 p-space-xl min-h-[calc(100vh-4rem)] flex flex-col gap-6">
+
+    <!-- BREADCRUMB -->
+    <div class="flex flex-wrap items-center justify-between gap-4">
+        <div class="flex items-center gap-2 text-body-sm font-body-sm text-on-surface-variant">
+            <a class="hover:text-secondary" asp-area="User" asp-controller="User" asp-action="MyCargos">Gelen Kargolarım</a>
+            <span class="material-symbols-outlined text-sm">chevron_right</span>
+            <span>Kargo Detayı</span>
+            <span class="material-symbols-outlined text-sm">chevron_right</span>
+            <span class="font-code-tracking text-on-surface font-semibold">@Model.TrackCode</span>
+        </div>
+        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-label-sm bg-surface-container-high text-on-surface">
+            <span class="w-2 h-2 rounded-full bg-secondary-container"></span>
+            Kargo Takip Bilgileri
+        </span>
+    </div>
+
+    <!-- TRACKING HEADER -->
+    <section class="bg-surface-container-lowest border border-outline-variant rounded-xl p-space-lg shadow-sm">
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6 pb-6 border-b border-outline-variant/40">
+            <div class="space-y-3">
+                <div class="flex flex-wrap items-center gap-3">
+                    <span class="text-label-md text-on-surface-variant uppercase tracking-wider">Takip Numarası</span>
+                    <div class="flex items-center gap-2 bg-surface-container-low px-3 py-1.5 rounded-lg border border-outline-variant/50">
+                        <span class="material-symbols-outlined text-base text-secondary">barcode_scanner</span>
+                        <span class="font-code-tracking text-headline-sm text-on-surface tracking-wide select-all" id="trackingCode">@Model.TrackCode</span>
+                        <button type="button" class="text-on-surface-variant hover:text-secondary transition p-0.5" onclick="navigator.clipboard.writeText(document.getElementById('trackingCode').innerText)" title="Takip kodunu kopyala">
+                            <span class="material-symbols-outlined text-base">content_copy</span>
+                        </button>
+                    </div>
+                    <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#FFF7ED] text-[#C2410C] border border-[#EA580C]/20 text-label-md">
+                        <span class="w-2 h-2 rounded-full bg-[#EA580C]"></span>
+                        <span>@GetCargoStatusText(Model.CargoStatus)</span>
+                    </div>
+                    <div class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-surface-container text-on-surface text-label-md border border-outline-variant/40">
+                        <span class="material-symbols-outlined text-secondary text-base">inventory_2</span>
+                        <span>@GetCargoTypeText(Model.CargoType)</span>
+                    </div>
+                </div>
+
+                <div class="flex flex-wrap items-center gap-6 pt-1 text-on-surface-variant text-body-sm">
+                    <div>
+                        Gönderim Tarihi:
+                        <span class="text-on-surface font-semibold">@Model.ShipmentDate.ToString("dd.MM.yyyy HH:mm")</span>
+                    </div>
+                    <div class="hidden sm:block text-outline-variant">•</div>
+                    <div>
+                        Tahmini Teslimat:
+                        <span class="text-on-surface font-semibold text-secondary">@Model.EstimatedArrivalDate.ToString("dd.MM.yyyy HH:mm")</span>
+                    </div>
+                    @if (Model.ActualDeliveryDate.HasValue)
+                    {
+                        <div class="hidden sm:block text-outline-variant">•</div>
+                        <div>
+                            Gerçek Teslimat:
+                            <span class="text-on-surface font-semibold">@Model.ActualDeliveryDate.Value.ToString("dd.MM.yyyy HH:mm")</span>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <!-- QUICK METRICS -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 pt-6">
+            <div class="p-3 bg-surface-container-low rounded-lg border border-outline-variant/30 flex items-center gap-3">
+                <div class="w-10 h-10 rounded-lg bg-surface-container-lowest flex items-center justify-center text-secondary shadow-xs">
+                    <span class="material-symbols-outlined text-xl">inventory_2</span>
+                </div>
+                <div>
+                    <span class="block text-body-sm text-on-surface-variant">Paket & Ağırlık</span>
+                    <span class="text-label-lg text-on-surface font-semibold">@Model.Desi Desi / @Model.Weight Kg</span>
+                </div>
+            </div>
+            <div class="p-3 bg-surface-container-low rounded-lg border border-outline-variant/30 flex items-center gap-3">
+                <div class="w-10 h-10 rounded-lg bg-surface-container-lowest flex items-center justify-center text-primary-container shadow-xs">
+                    <span class="material-symbols-outlined text-xl">store</span>
+                </div>
+                <div>
+                    <span class="block text-body-sm text-on-surface-variant">Çıkış Şubesi</span>
+                    <span class="text-label-lg text-on-surface font-semibold">@Model.OriginCity / @Model.OriginBranchName</span>
+                </div>
+            </div>
+            <div class="p-3 bg-surface-container-low rounded-lg border border-outline-variant/30 flex items-center gap-3">
+                <div class="w-10 h-10 rounded-lg bg-surface-container-lowest flex items-center justify-center text-secondary-container shadow-xs">
+                    <span class="material-symbols-outlined text-xl">location_on</span>
+                </div>
+                <div>
+                    <span class="block text-body-sm text-on-surface-variant">Varış Şubesi</span>
+                    <span class="text-label-lg text-on-surface font-semibold">@Model.DestinationCity / @Model.DestinationBranchName</span>
+                </div>
+            </div>
+            <div class="p-3 bg-surface-container-low rounded-lg border border-outline-variant/30 flex items-center gap-3">
+                <div class="w-10 h-10 rounded-lg bg-surface-container-lowest flex items-center justify-center text-on-tertiary-container shadow-xs">
+                    <span class="material-symbols-outlined text-xl">flag</span>
+                </div>
+                <div>
+                    <span class="block text-body-sm text-on-surface-variant">Güncel Durum</span>
+                    <span class="text-label-lg text-on-surface font-semibold">@GetCargoStatusText(Model.CargoStatus)</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- MAIN CONTENT -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+
+        <!-- LEFT COLUMN -->
+        <div class="lg:col-span-7 flex flex-col gap-6">
+
+            <!-- MAP PLACEHOLDER -->
+            <div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-space-lg shadow-sm flex flex-col gap-4">
+                <div class="flex items-center gap-2">
+                    <span class="material-symbols-outlined text-secondary-container text-xl">explore</span>
+                    <h2 class="text-headline-sm text-on-surface">Kargo Rota Bilgileri</h2>
+                </div>
+                <div class="relative w-full min-h-[220px] rounded-xl overflow-hidden border border-outline-variant/70 bg-surface-container-low flex flex-col items-center justify-center text-center p-6">
+                    <span class="material-symbols-outlined text-5xl text-secondary mb-3">map</span>
+                    <p class="text-label-lg text-on-surface font-semibold">Canlı konum bilgisi henüz mevcut değil.</p>
+                    <p class="text-body-sm text-on-surface-variant mt-1">Bu alanda GPS entegrasyonu tamamlandığında kurye ve kargo rotası gösterilecektir.</p>
+                    <div class="mt-4 flex flex-wrap justify-center gap-3 text-body-sm">
+                        <span class="px-3 py-1 rounded-lg bg-surface-container">Çıkış: @Model.OriginCity</span>
+                        <span class="material-symbols-outlined text-outline">arrow_forward</span>
+                        <span class="px-3 py-1 rounded-lg bg-surface-container">Varış: @Model.DestinationCity</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SENDER / RECEIVER -->
+            <div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-space-lg shadow-sm">
+                <div class="flex items-center justify-between pb-4 border-b border-outline-variant/40 mb-4">
+                    <div class="flex items-center gap-2">
+                        <span class="material-symbols-outlined text-secondary text-xl">local_shipping</span>
+                        <h3 class="text-headline-sm text-on-surface">Gönderici, Alıcı ve Paket Bilgileri</h3>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="space-y-3 p-3 bg-surface-container-low rounded-lg border border-outline-variant/30">
+                        <div class="flex items-center gap-2 text-label-md text-on-surface-variant">
+                            <span class="material-symbols-outlined text-base">outgoing_mail</span>
+                            <span>GÖNDERİCİ</span>
+                        </div>
+                        <div class="space-y-1">
+                            <span class="text-headline-sm text-on-surface block">@Model.SenderName</span>
+                            <p class="text-body-sm text-on-surface-variant">@Model.SenderDistrict / @Model.SenderCity</p>
+                        </div>
+                    </div>
+
+                    <div class="space-y-3 p-3 bg-surface-container-low rounded-lg border border-outline-variant/30">
+                        <div class="flex items-center gap-2 text-label-md text-on-surface-variant">
+                            <span class="material-symbols-outlined text-base">move_to_inbox</span>
+                            <span>ALICI</span>
+                        </div>
+                        <div class="space-y-1">
+                            <span class="text-headline-sm text-on-surface block">@Model.ReceiverName</span>
+                            <p class="text-body-sm text-on-surface-variant">@Model.ReceiverDistrict / @Model.ReceiverCity</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 sm:grid-cols-3 gap-4 mt-4 pt-4 border-t border-outline-variant/30 text-body-sm">
+                    <div>
+                        <span class="text-on-surface-variant block">Kargo Türü</span>
+                        <span class="font-semibold text-on-surface mt-0.5 block">@GetCargoTypeText(Model.CargoType)</span>
+                    </div>
+                    <div>
+                        <span class="text-on-surface-variant block">Ağırlık</span>
+                        <span class="font-semibold text-on-surface mt-0.5 block">@Model.Weight Kg</span>
+                    </div>
+                    <div>
+                        <span class="text-on-surface-variant block">Desi</span>
+                        <span class="font-semibold text-on-surface mt-0.5 block">@Model.Desi</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- RIGHT COLUMN -->
+        <div class="lg:col-span-5 flex flex-col gap-6">
+
+            <!-- TIMELINE -->
+            <div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-space-lg shadow-sm">
+                <div class="flex items-center justify-between pb-4 border-b border-outline-variant/40 mb-5">
+                    <div class="flex items-center gap-2">
+                        <span class="material-symbols-outlined text-secondary text-xl">timeline</span>
+                        <h3 class="text-headline-sm text-on-surface">Gönderi Zaman Çizelgesi</h3>
+                    </div>
+                    <span class="text-label-sm text-on-surface-variant bg-surface-container-low px-2 py-1 rounded">
+                        @(Model.CargoMovements?.Count ?? 0) Hareket
+                    </span>
+                </div>
+
+                <div class="relative space-y-6">
+                    @if (Model.CargoMovements != null && Model.CargoMovements.Any())
+                    {
+                        @foreach (var movement in Model.CargoMovements.OrderBy(x => x.MovementDate))
+                        {
+                            <div class="relative flex items-start gap-4">
+                                <div class="w-7 h-7 rounded-full bg-[#10B981] text-white flex items-center justify-center z-10 shrink-0 shadow-xs">
+                                    <span class="material-symbols-outlined text-base">check</span>
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <div class="flex flex-wrap items-baseline justify-between gap-2">
+                                        <h4 class="text-label-md text-on-surface font-semibold">@GetCargoStatusText(movement.NewStatus)</h4>
+                                        <span class="text-body-sm text-on-surface-variant">@movement.MovementDate.ToString("dd.MM.yyyy HH:mm")</span>
+                                    </div>
+                                    <p class="text-body-sm text-on-surface-variant mt-0.5">@movement.Description</p>
+                                    @if (!string.IsNullOrWhiteSpace(movement.CityName) || !string.IsNullOrWhiteSpace(movement.BranchName) || !string.IsNullOrWhiteSpace(movement.TransferCenterName))
+                                    {
+                                        <p class="text-xs text-on-surface-variant mt-1">
+                                            @if (!string.IsNullOrWhiteSpace(movement.TransferCenterName))
+                                            {
+                                                @movement.TransferCenterName
+                                            }
+                                            else
+                                            {
+                                                @movement.BranchName
+                                            }
+                                            @if (!string.IsNullOrWhiteSpace(movement.CityName))
+                                            {
+                                                <span> - @movement.CityName</span>
+                                            }
+                                        </p>
+                                    }
+                                </div>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <p class="text-body-sm text-on-surface-variant">Bu kargoya ait henüz hareket kaydı bulunmuyor.</p>
+                    }
+                </div>
+            </div>
+
+            <!-- DELIVERY STATUS INFO -->
+            <div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-space-lg shadow-sm space-y-4">
+                <div class="flex items-center gap-2 pb-3 border-b border-outline-variant/40">
+                    <span class="material-symbols-outlined text-secondary text-xl">info</span>
+                    <h3 class="text-headline-sm text-on-surface">Teslimat Bilgileri</h3>
+                </div>
+                <div class="p-3.5 bg-surface-container-low rounded-xl border border-outline-variant/40">
+                    <span class="block text-body-sm text-on-surface-variant">Mevcut Kargo Durumu</span>
+                    <span class="text-label-lg text-on-surface font-semibold">@GetCargoStatusText(Model.CargoStatus)</span>
+                </div>
+                <div class="p-3.5 bg-surface-container-low rounded-xl border border-outline-variant/40">
+                    <span class="block text-body-sm text-on-surface-variant">Tahmini Teslimat Tarihi</span>
+                    <span class="text-label-lg text-on-surface font-semibold">@Model.EstimatedArrivalDate.ToString("dd.MM.yyyy HH:mm")</span>
+                </div>
+                @if (Model.ActualDeliveryDate.HasValue)
+                {
+                    <div class="p-3.5 bg-surface-container-low rounded-xl border border-outline-variant/40">
+                        <span class="block text-body-sm text-on-surface-variant">Teslim Edildiği Tarih</span>
+                        <span class="text-label-lg text-on-surface font-semibold">@Model.ActualDeliveryDate.Value.ToString("dd.MM.yyyy HH:mm")</span>
+                    </div>
+                }
+            </div>
+
+            <!-- SUPPORT -->
+            <div class="bg-surface-container-high/40 border border-outline-variant rounded-xl p-space-md flex items-center justify-between gap-4">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-full bg-secondary text-on-secondary flex items-center justify-center shrink-0">
+                        <span class="material-symbols-outlined text-xl">support_agent</span>
+                    </div>
+                    <div>
+                        <span class="block text-label-md text-on-surface font-semibold">Yardıma mı ihtiyacınız var?</span>
+                        <span class="block text-body-sm text-on-surface-variant">Kargonuzla ilgili destek alabilirsiniz.</span>
+                    </div>
+                </div>
+                <a href="tel:4440000" class="px-3.5 py-1.5 bg-surface-container-lowest border border-outline-variant rounded-lg text-on-surface text-label-md shadow-xs whitespace-nowrap">Destek</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- MOVEMENT HISTORY TABLE -->
+    <section class="bg-surface-container-lowest border border-outline-variant rounded-xl p-space-lg shadow-sm">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-outline-variant/40 mb-4">
+            <div>
+                <h3 class="text-headline-sm text-on-surface">Detaylı Sevkiyat Hareket Kayıtları</h3>
+                <p class="text-body-sm text-on-surface-variant">Kargonuzun geçmiş hareket kayıtları.</p>
+            </div>
+        </div>
+
+        <div class="overflow-x-auto custom-scrollbar">
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr class="bg-surface-container-low border-b border-outline-variant/60 h-11 text-label-sm text-on-surface-variant uppercase tracking-wider">
+                        <th class="py-2.5 px-4">Tarih & Saat</th>
+                        <th class="py-2.5 px-4">İşlem Noktası</th>
+                        <th class="py-2.5 px-4">Operasyonel Durum</th>
+                        <th class="py-2.5 px-4">Açıklama</th>
+                        <th class="py-2.5 px-4 text-right">Durum Kodu</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-surface-container text-body-sm text-on-surface">
+                    @if (Model.CargoMovements != null && Model.CargoMovements.Any())
+                    {
+                        @foreach (var movement in Model.CargoMovements.OrderByDescending(x => x.MovementDate))
+                        {
+                            <tr class="hover:bg-surface-container-low/60 transition">
+                                <td class="py-3 px-4 font-code-tracking font-medium text-secondary">@movement.MovementDate.ToString("dd.MM.yyyy HH:mm")</td>
+                                <td class="py-3 px-4 font-semibold">
+                                    @if (!string.IsNullOrWhiteSpace(movement.TransferCenterName))
+                                    {
+                                        @movement.TransferCenterName
+                                    }
+                                    else
+                                    {
+                                        @movement.BranchName
+                                    }
+                                    @if (!string.IsNullOrWhiteSpace(movement.CityName))
+                                    {
+                                        <span> - @movement.CityName</span>
+                                    }
+                                </td>
+                                <td class="py-3 px-4">
+                                    <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-label-sm bg-surface-container-low text-on-surface">
+                                        @GetCargoStatusText(movement.NewStatus)
+                                    </span>
+                                </td>
+                                <td class="py-3 px-4">@movement.Description</td>
+                                <td class="py-3 px-4 text-right font-code-tracking text-on-surface-variant">@movement.NewStatus</td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="5" class="py-4 text-center text-on-surface-variant">Hareket kaydı bulunamadı.</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="pt-4 pb-8 flex flex-col sm:flex-row items-center justify-between text-body-sm text-on-surface-variant border-t border-outline-variant/40">
+        <div class="flex items-center gap-3">
+            <span class="font-semibold text-on-surface">CargoTrack</span>
+            <span>•</span>
+            <span>Kargo Takip ve Lojistik Yönetimi</span>
+        </div>
+    </footer>
+</main>

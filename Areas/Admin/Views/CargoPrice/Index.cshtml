@@ -1,0 +1,109 @@
+﻿@model DtoLayer.DTOs.CargoPriceDtos.CargoPriceDto
+
+@{
+    ViewData["Title"] = "Fiyat Yönetimi";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<main class="ml-64 pt-20 px-8 pb-12">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+        <div>
+            <h1 class="text-2xl font-bold text-on-surface">Fiyat Yönetimi</h1>
+            <p class="text-sm text-on-surface-variant mt-1">
+                Kargo gönderilerinde uygulanacak fiyat tarifesini yönetin.
+            </p>
+        </div>
+
+        @if (Model == null)
+        {
+            <a asp-area="Admin"
+               asp-controller="CargoPrice"
+               asp-action="Create"
+               class="px-5 py-3 rounded-xl bg-primary text-white font-medium hover:opacity-90 transition">
+                + Yeni Tarife Oluştur
+            </a>
+        }
+    </div>
+
+    @if (Model == null)
+    {
+        <section class="bg-surface-container-lowest rounded-2xl border border-outline-variant/30 p-10 text-center">
+            <div class="text-4xl mb-4">₺</div>
+            <h2 class="text-lg font-semibold text-on-surface mb-2">
+                Henüz fiyat tarifesi oluşturulmadı
+            </h2>
+            <p class="text-sm text-on-surface-variant mb-6">
+                Kargo ücretlerinin hesaplanabilmesi için öncelikle bir fiyat tarifesi oluşturmalısınız.
+            </p>
+            <a asp-area="Admin"
+               asp-controller="CargoPrice"
+               asp-action="Create"
+               class="inline-block px-5 py-3 rounded-xl bg-primary text-white font-medium hover:opacity-90 transition">
+                Fiyat Tarifesi Oluştur
+            </a>
+        </section>
+    }
+    else
+    {
+        <section class="bg-surface-container-lowest rounded-2xl border border-outline-variant/30 shadow-sm overflow-hidden">
+            <div class="p-6 border-b border-outline-variant/30 flex items-center justify-between">
+                <div>
+                    <h2 class="text-lg font-semibold text-on-surface">Mevcut Fiyat Tarifesi</h2>
+                    <p class="text-sm text-on-surface-variant mt-1">
+                        Kargo ücret hesaplamasında kullanılan tarife bilgileri.
+                    </p>
+                </div>
+                <span class="px-3 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-700">
+                    Aktif
+                </span>
+            </div>
+
+            <div class="p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                <div class="p-5 rounded-xl bg-surface-container-low">
+                    <p class="text-sm text-on-surface-variant">Kilogram Başına Ücret</p>
+                    <p class="text-2xl font-bold text-on-surface mt-2">
+                        @Model.PricePerKg.ToString("N2") ₺
+                    </p>
+                </div>
+
+                <div class="p-5 rounded-xl bg-surface-container-low">
+                    <p class="text-sm text-on-surface-variant">Desi Başına Ücret</p>
+                    <p class="text-2xl font-bold text-on-surface mt-2">
+                        @Model.PricePerDesi.ToString("N2") ₺
+                    </p>
+                </div>
+
+                <div class="p-5 rounded-xl bg-surface-container-low">
+                    <p class="text-sm text-on-surface-variant">Ek Hizmet Ücreti</p>
+                    <p class="text-2xl font-bold text-on-surface mt-2">
+                        @Model.ExtraServicePrice.ToString("N2") ₺
+                    </p>
+                </div>
+
+                <div class="p-5 rounded-xl bg-surface-container-low">
+                    <p class="text-sm text-on-surface-variant">Bölge Katsayısı</p>
+                    <p class="text-2xl font-bold text-on-surface mt-2">
+                        @Model.RegionCoefficient.ToString("N2")
+                    </p>
+                </div>
+
+                <div class="p-5 rounded-xl bg-surface-container-low">
+                    <p class="text-sm text-on-surface-variant">Teslimat Türü Katsayısı</p>
+                    <p class="text-2xl font-bold text-on-surface mt-2">
+                        @Model.DeliveryTypeCoefficient.ToString("N2")
+                    </p>
+                </div>
+            </div>
+
+            <div class="px-6 py-4 border-t border-outline-variant/30 flex justify-end">
+                <a asp-area="Admin"
+                   asp-controller="CargoPrice"
+                   asp-action="Update"
+                   asp-route-id="@Model.Id"
+                   class="px-5 py-3 rounded-xl bg-primary text-white font-medium hover:opacity-90 transition">
+                    Tarifeyi Güncelle
+                </a>
+            </div>
+        </section>
+    }
+</main>

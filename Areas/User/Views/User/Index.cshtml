@@ -1,0 +1,55 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
+}
+
+
+    <!-- ========================================================== -->
+    <!-- MAIN CONTENT CANVAS -->
+    <!-- ========================================================== -->
+<main class="md:ml-64 pt-20 pb-16 px-6 space-y-6 w-[calc(100%-16rem)]">
+        <!-- 1. Karşılama ve Hızlı Aksiyonlar Bannerı -->
+        <section class="bg-surface-container-lowest rounded-2xl p-space-lg border border-surface-container elevation-1 flex flex-col lg:flex-row lg:items-center justify-between gap-5">
+            <div class="space-y-1.5">
+                <div class="flex items-center gap-2.5 flex-wrap">
+                    <h2 class="text-headline-lg font-headline-lg text-on-surface tracking-tight">Hoş Geldiniz, Selin Hanım 👋</h2>
+                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-label-sm font-label-sm bg-surface-container-high text-on-surface">
+                        <span class="material-symbols-outlined text-[14px]" data-icon="calendar_today">calendar_today</span>
+                        <span>24 Ekim 2024, Perşembe</span>
+                    </span>
+                    <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-label-sm font-label-sm bg-secondary-fixed text-on-secondary-fixed">
+                        <span class="w-1.5 h-1.5 rounded-full bg-secondary-container"></span>
+                        <span>1 Paket Dağıtımda</span>
+                    </span>
+                </div>
+                <p class="text-body-md font-body-md text-on-surface-variant">
+                    Bugün adresinize teslim edilecek <strong class="text-on-surface font-semibold">1 ekspres kargonuz</strong> bulunmaktadır. Kuryenizin rotasını canlı takip edebilirsiniz.
+                </p>
+            </div>
+            <!-- Hızlı Aksiyon Grupları -->
+            <div class="flex items-center gap-2.5 flex-wrap sm:flex-nowrap">
+                <button class="flex items-center gap-2 px-4 py-2.5 bg-secondary-container hover:bg-secondary text-on-secondary text-label-lg font-label-lg rounded-xl transition shadow-sm shadow-orange-500/15">
+                    <span class="material-symbols-outlined text-[18px]" data-icon="package_2">package_2</span>
+                    <span>+ Yeni Gönderi Oluştur</span>
+                </button>
+                <button class="flex items-center gap-2 px-4 py-2.5 bg-surface-container hover:bg-surface-container-high text-on-surface text-label-lg font-label-lg rounded-xl transition">
+                    <span class="material-symbols-outlined text-[18px]" data-icon="two_wheeler">two_wheeler</span>
+                    <span>Kurye Çağır</span>
+                </button>
+                <button class="flex items-center gap-2 px-3.5 py-2.5 bg-surface-container-lowest border border-outline-variant hover:border-outline text-on-surface text-label-lg font-label-lg rounded-xl transition">
+                    <span class="material-symbols-outlined text-[18px]" data-icon="alt_route">alt_route</span>
+                    <span>Teslimat Noktası Değiştir</span>
+                </button>
+            </div>
+        </section>
+        <!-- 2. KPI / Özet Metrik Kartları (Bento Grid) -->
+    @await Component.InvokeAsync("UserCargoStatistic")
+        <!-- 3. Öne Çıkan Aktif Kargo Canlı Takip & Harita Hero Kartı (Bento Layout) -->
+    @await Component.InvokeAsync("LastOutgoingCargoDetail")
+      
+     
+      
+        
+    </main>
+  

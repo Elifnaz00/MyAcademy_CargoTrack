@@ -1,0 +1,466 @@
+﻿@using System.Globalization
+@model DtoLayer.DTOs.AdminDashboardDtos.AdminDashboardDto
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    var maxDailyCount = Model.DailyStatistics
+       .SelectMany(x => new[] { x.AcceptedCargoCount, x.DeliveredCargoCount })
+       .DefaultIfEmpty(0)
+       .Max();
+
+    if (maxDailyCount == 0)
+    {
+        maxDailyCount = 1;
+    }
+
+    var weeklyAcceptedTotal = Model.DailyStatistics
+        .Sum(x => x.AcceptedCargoCount);
+
+    var weeklyDeliveredTotal = Model.DailyStatistics
+        .Sum(x => x.DeliveredCargoCount);
+
+    var totalStatusCargoCount = Model.CargoStatusStatistics
+.Sum(x => x.CargoCount);
+
+    var statusColors = new Dictionary<string, string>
+{
+    { "Created", "#7c839b" },
+    { "AtOriginBranch", "#131b2e" },
+    { "InTransferCenter", "#fd651e" },
+    { "AtDestinationBranch", "#009668" },
+    { "OutForDelivery", "#d4a017" },
+    { "Delivered", "#2563eb" },
+    { "DeliveryFailed", "#ba1a1a" },
+    { "ReturnInProgress", "#9333ea" },
+    { "ReturnedToSender", "#64748b" }
+};
+
+    var statusNames = new Dictionary<string, string>
+{
+    { "Created", "Oluşturuldu" },
+    { "AtOriginBranch", "Çıkış Şubesinde" },
+    { "InTransferCenter", "Transfer Merkezinde" },
+    { "AtDestinationBranch", "Varış Şubesinde" },
+    { "OutForDelivery", "Dağıtımda" },
+    { "Delivered", "Teslim Edildi" },
+    { "DeliveryFailed", "Teslimat Başarısız" },
+    { "ReturnInProgress", "İade Sürecinde" },
+    { "ReturnedToSender", "Göndericiye İade Edildi" }
+};
+
+    var currentPercentage = 0.0;
+
+    var gradientSegments = new List<string>();
+
+    foreach (var status in Model.CargoStatusStatistics)
+    {
+        var percentage = totalStatusCargoCount == 0
+            ? 0
+            : (double)status.CargoCount / totalStatusCargoCount * 100;
+
+        var color = statusColors.ContainsKey(status.StatusName)
+            ? statusColors[status.StatusName]
+            : "#9ca3af";
+
+        var nextPercentage = currentPercentage + percentage;
+
+        gradientSegments.Add(
+            $"{color} {currentPercentage.ToString(CultureInfo.InvariantCulture)}% {nextPercentage.ToString(CultureInfo.InvariantCulture)}%"
+        );
+
+        currentPercentage = nextPercentage;
+    }
+
+    var donutGradient = gradientSegments.Count > 0
+        ? $"conic-gradient({string.Join(", ", gradientSegments)})"
+        : "conic-gradient(#e5e7eb 0% 100%)";
+}
+
+<main class="ml-64 pt-20 px-8 pb-12">
+    <!-- Header & Action Ribbon -->
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
+        <div>
+            <h1 class="text-headline-lg font-headline-lg text-on-surface tracking-tight">Operasyon Kontrol Paneli</h1>
+            <p class="text-body-md font-body-md text-on-surface-variant mt-0.5">
+                Türkiye genelindeki kargo hacmi, şube performansı ve operasyonel durum özeti.
+            </p>
+        </div>
+        <!-- Action Toolbar -->
+        <div class="flex items-center gap-3">
+            <!-- Date Range Filter -->
+            <div class="flex items-center gap-2 px-3 py-2 bg-surface-container-lowest border border-outline-variant/50 rounded-lg shadow-sm">
+                <span class="material-symbols-outlined text-[18px] text-outline">calendar_today</span>
+                <span class="text-label-md font-label-md text-on-surface">Son 7 Gün</span>
+                <span class="material-symbols-outlined text-[18px] text-outline">expand_more</span>
+            </div>
+            <!-- Refresh Button -->
+            <a asp-area="Admin"
+               asp-controller="AdminDashboard"
+               asp-action="Index"
+               class="flex items-center gap-1.5 px-3 py-2 bg-surface-container-lowest border border-outline-variant/50 rounded-lg text-label-md font-label-md text-on-surface hover:bg-surface-container-low transition-colors shadow-sm">
+                <span class="material-symbols-outlined text-[18px] text-on-tertiary-container">refresh</span>
+                <span>Verileri Yenile</span>
+            </a>
+        </div>
+    </div>
+    <!-- ========================================================================= -->
+    <!-- 1. KEY KPI METRICS SECTION (6 High-Density Cards)                          -->
+    <!-- ========================================================================= -->
+
+    <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4 mb-8">
+
+        <!-- KPI 1: Toplam Kargo -->
+        <div class="p-4 rounded-xl bg-surface-container-lowest border border-outline-variant/30 shadow-sm flex flex-col justify-between hover:-translate-y-0.5 transition-transform duration-200">
+            <div class="flex items-center justify-between mb-2">
+                <span class="text-label-sm font-label-sm text-on-surface-variant font-medium">Toplam Kargo</span>
+                <span class="material-symbols-outlined text-[18px] text-primary-container">inventory_2</span>
+            </div>
+            <div>
+                <span class="text-metric-number font-metric-number text-on-surface block">
+                    @Model.Kpi.TotalCargoCount.ToString("N0")
+                </span>
+                <div class="text-label-sm font-label-sm text-on-surface-variant mt-1">
+                    Sistemdeki toplam kargo
+                </div>
+            </div>
+        </div>
+
+        <!-- KPI 2: Dağıtımdaki Kargo -->
+        <div class="p-4 rounded-xl bg-surface-container-lowest border border-outline-variant/30 shadow-sm flex flex-col justify-between hover:-translate-y-0.5 transition-transform duration-200">
+            <div class="flex items-center justify-between mb-2">
+                <span class="text-label-sm font-label-sm text-on-surface-variant font-medium">Dağıtımda</span>
+                <span class="relative flex h-2.5 w-2.5">
+                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-secondary opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-secondary-container"></span>
+                </span>
+            </div>
+            <div>
+                <span class="text-metric-number font-metric-number text-on-surface block">
+                    @Model.Kpi.OutForDeliveryCount.ToString("N0")
+                </span>
+                <div class="flex items-center gap-1 mt-1 text-label-sm font-label-sm text-secondary font-medium">
+                    <span class="material-symbols-outlined text-[15px]">two_wheeler</span>
+                    <span>Dağıtıma çıkarılan kargolar</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- KPI 3: Geciken Kargo -->
+        <div class="p-4 rounded-xl bg-surface-container-lowest border border-error-container shadow-sm flex flex-col justify-between hover:-translate-y-0.5 transition-transform duration-200">
+            <div class="flex items-center justify-between mb-2">
+                <span class="text-label-sm font-label-sm text-error font-medium">Geciken Kargo</span>
+                <span class="material-symbols-outlined text-[18px] text-error">warning</span>
+            </div>
+            <div>
+                <span class="text-metric-number font-metric-number text-error block">
+                    @Model.Kpi.DelayedCargoCount.ToString("N0")
+                </span>
+                <div class="text-label-sm font-label-sm text-on-surface-variant mt-1">
+                    Tahmini teslim tarihi geçmiş
+                </div>
+            </div>
+        </div>
+
+        <!-- KPI 4: Teslimat Başarı Oranı -->
+        <div class="p-4 rounded-xl bg-surface-container-lowest border border-outline-variant/30 shadow-sm flex flex-col justify-between hover:-translate-y-0.5 transition-transform duration-200">
+            <div class="flex items-center justify-between mb-2">
+                <span class="text-label-sm font-label-sm text-on-surface-variant font-medium">Başarı Oranı</span>
+                <span class="material-symbols-outlined text-[18px] text-on-tertiary-container">verified</span>
+            </div>
+            <div>
+                <span class="text-metric-number font-metric-number text-on-surface block">
+                    %@Model.Kpi.OnTimeDeliveryRate.ToString("N1")
+                </span>
+                <div class="flex items-center gap-1 mt-1 text-label-sm font-label-sm text-on-tertiary-container">
+                    <span>Zamanında teslimat oranı</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- KPI 5: Aktif Şube -->
+        <div class="p-4 rounded-xl bg-surface-container-lowest border border-outline-variant/30 shadow-sm flex flex-col justify-between hover:-translate-y-0.5 transition-transform duration-200">
+            <div class="flex items-center justify-between mb-2">
+                <span class="text-label-sm font-label-sm text-on-surface-variant font-medium">Aktif Şubeler</span>
+                <span class="material-symbols-outlined text-[18px] text-outline">store</span>
+            </div>
+            <div>
+                <span class="text-metric-number font-metric-number text-on-surface block">
+                    @Model.Kpi.ActiveBranchCount.ToString("N0")
+                </span>
+                <div class="flex items-center gap-1 mt-1 text-label-sm font-label-sm text-on-surface-variant">
+                    <span>Faaliyet durumundaki şubeler</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- KPI 6: Aktif Personel -->
+        <div class="p-4 rounded-xl bg-surface-container-lowest border border-outline-variant/30 shadow-sm flex flex-col justify-between hover:-translate-y-0.5 transition-transform duration-200">
+            <div class="flex items-center justify-between mb-2">
+                <span class="text-label-sm font-label-sm text-on-surface-variant font-medium">Aktif Personel</span>
+                <span class="material-symbols-outlined text-[18px] text-outline">badge</span>
+            </div>
+            <div>
+                <span class="text-metric-number font-metric-number text-on-surface block">
+                    @Model.Kpi.ActiveEmployeeCount.ToString("N0")
+                </span>
+                <div class="text-label-sm font-label-sm text-on-surface-variant mt-1">
+                    Sistemde aktif personel
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+    <!-- ========================================================================= -->
+    <!-- 2. ANALYTICS & VISUAL DISTRIBUTION GRID                                  -->
+    <!-- ========================================================================= -->
+    <section class="grid grid-cols-1 lg:grid-cols-12 gap-6 mb-8">
+        <!-- Left (8 cols): 7 Günlük Kargo Trafiği & Sevkiyat Hacmi -->
+        <div class="lg:col-span-8 p-6 rounded-xl bg-surface-container-lowest border border-outline-variant/30 shadow-sm flex flex-col justify-between">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-6">
+                <div>
+                    <h2 class="text-headline-md font-headline-md text-on-surface">Son 7 Günlük Kargo Trafiği &amp; Sevkiyat Hacmi</h2>
+                    <p class="text-body-sm font-body-sm text-on-surface-variant">Kabul Edilen ve Teslim Edilen paket hacimlerinin günlük karşılaştırması</p>
+                </div>
+                <!-- Legend -->
+                <div class="flex items-center gap-4 text-label-sm font-label-sm">
+                    <div class="flex items-center gap-1.5">
+                        <span class="w-3 h-3 rounded-sm bg-primary-container"></span>
+                        <span class="text-on-surface-variant">Kabul Edilen Kargo</span>
+                    </div>
+                    <div class="flex items-center gap-1.5">
+                        <span class="w-3 h-3 rounded-sm bg-secondary-container"></span>
+                        <span class="text-on-surface-variant">Teslim Edilen</span>
+                    </div>
+                </div>
+            </div>
+            <!-- Custom Tailwind Bar Chart Grid -->
+
+            <div class="w-full flex flex-col gap-2">
+
+                <div class="h-56 w-full flex items-end justify-between gap-3 pt-6 border-b border-outline-variant/30 px-2">
+
+                    @foreach (var item in Model.DailyStatistics)
+                    {
+                        var acceptedHeight = (double)item.AcceptedCargoCount / maxDailyCount * 100;
+                        var deliveredHeight = (double)item.DeliveredCargoCount / maxDailyCount * 100;
+
+                        <div class="flex-1 flex flex-col items-center gap-2 group h-full justify-end">
+
+                            <div class="w-full flex items-end justify-center gap-1.5 h-full">
+
+                                <div class="w-5 bg-primary-container rounded-t transition-all group-hover:opacity-90"
+                                     style="height: @(acceptedHeight.ToString(CultureInfo.InvariantCulture))%;"
+                                     title="Kabul edilen: @item.AcceptedCargoCount">
+                                </div>
+
+                                <div class="w-5 bg-secondary-container rounded-t transition-all group-hover:opacity-90"
+                                     style="height: @(deliveredHeight.ToString(CultureInfo.InvariantCulture))%;"
+                                     title="Teslim edilen: @item.DeliveredCargoCount">
+                                </div>
+
+                            </div>
+
+                            <span class="text-label-sm font-label-sm text-on-surface-variant">
+                                @item.Date.ToString("ddd", CultureInfo.GetCultureInfo("tr-TR"))
+                            </span>
+
+                        </div>
+                    }
+
+                </div>
+
+                <div class="flex items-center justify-between text-body-sm font-body-sm text-on-surface-variant pt-2">
+
+                    <span>
+                        Haftalık Kabul:
+                        <strong class="text-on-surface font-semibold">
+                            @weeklyAcceptedTotal.ToString("N0")
+                        </strong>
+                    </span>
+
+                    <span>
+                        Haftalık Teslim:
+                        <strong class="text-on-surface font-semibold">
+                            @weeklyDeliveredTotal.ToString("N0")
+                        </strong>
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+        <!-- Right (4 cols): Kargo Statüleri Donut / Dağılım Analizi -->
+        <div class="lg:col-span-4 p-6 rounded-xl bg-surface-container-lowest border border-outline-variant/30 shadow-sm flex flex-col justify-between">
+            <div>
+                <h2 class="text-headline-md font-headline-md text-on-surface">Durum Dağılımı</h2>
+                <p class="text-body-sm font-body-sm text-on-surface-variant">Sistemdeki paketlerin anlık operasyonel fazları</p>
+            </div>
+            <!-- Donut Visual Mock + Center Metric -->
+
+            <div class="my-6 flex items-center justify-center relative">
+
+                <div class="w-44 h-44 rounded-full flex items-center justify-center shadow-inner"
+                     style="background: @donutGradient;">
+
+                    <div class="w-28 h-28 rounded-full bg-surface-container-lowest flex flex-col items-center justify-center shadow-sm">
+
+                        <span class="text-metric-number font-metric-number text-on-surface">
+                            @totalStatusCargoCount.ToString("N0")
+                        </span>
+
+                        <span class="text-[11px] font-label-sm text-on-surface-variant">
+                            Toplam Kargo
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="flex flex-col gap-2.5">
+
+                @foreach (var status in Model.CargoStatusStatistics)
+                {
+                    var percentage = totalStatusCargoCount == 0
+                    ? 0
+                    : (decimal)status.CargoCount / totalStatusCargoCount * 100;
+
+                    var color = statusColors.ContainsKey(status.StatusName)
+                    ? statusColors[status.StatusName]
+                    : "#9ca3af";
+
+                    var displayName = statusNames.ContainsKey(status.StatusName)
+                    ? statusNames[status.StatusName]
+                    : status.StatusName;
+
+                    <div class="flex items-center justify-between text-body-sm font-body-sm">
+
+                        <div class="flex items-center gap-2">
+
+                            <span class="w-2.5 h-2.5 rounded-full"
+                                  style="background-color: @color">
+                            </span>
+
+                            <span class="text-on-surface">
+                                @displayName
+                            </span>
+
+                        </div>
+
+                        <div class="flex items-center gap-2">
+
+                            <span class="font-semibold text-on-surface">
+                                @status.CargoCount.ToString("N0")
+                            </span>
+
+                            <span class="text-label-sm font-label-sm text-on-surface-variant">
+                                (%@percentage.ToString("N1"))
+                            </span>
+
+                        </div>
+
+                    </div>
+                }
+
+                @if (!Model.CargoStatusStatistics.Any())
+                {
+                    <p class="text-center text-body-sm text-on-surface-variant">
+                        Henüz kargo kaydı bulunmuyor.
+                    </p>
+                }
+
+            </div>
+        </div>
+    </section>
+    <!-- ========================================================================= -->
+    <!-- 3. TOP 5 BUSIEST BRANCHES PERFORMANCE TABLE                              -->
+    <!-- ========================================================================= -->
+
+    <section class="p-6 rounded-xl bg-surface-container-lowest border border-outline-variant/30 shadow-sm">
+
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-6">
+            <div>
+                <h2 class="text-headline-md font-headline-md text-on-surface">
+                    En Yoğun 5 Şube
+                </h2>
+                <p class="text-body-sm font-body-sm text-on-surface-variant">
+                    Şubelerin toplam gelen ve giden kargo hacmine göre sıralaması
+                </p>
+            </div>
+        </div>
+
+        <!-- Data Table -->
+        <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+
+                <thead>
+                    <tr class="bg-surface-container-low text-on-surface-variant text-label-sm font-label-sm uppercase tracking-wider h-11 border-b border-outline-variant/30">
+                        <th class="py-3 px-4 w-12 text-center">#</th>
+                        <th class="py-3 px-4">Şube</th>
+                        <th class="py-3 px-4">Şehir</th>
+                        <th class="py-3 px-4">Giden Kargo</th>
+                        <th class="py-3 px-4">Gelen Kargo</th>
+                        <th class="py-3 px-4 text-right">Toplam Hacim</th>
+                    </tr>
+                </thead>
+
+                <tbody class="divide-y divide-outline-variant/20 text-body-sm font-body-sm">
+
+                    @if (Model.TopBranches != null && Model.TopBranches.Any())
+                    {
+                        for (int i = 0; i < Model.TopBranches.Count; i++)
+                        {
+                            var branch = Model.TopBranches[i];
+
+                            <tr class="hover:bg-surface-container-low/50 transition-colors">
+
+                                <td class="py-3.5 px-4 text-center font-bold text-on-surface">
+                                    @(i + 1)
+                                </td>
+
+                                <td class="py-3.5 px-4">
+                                    <div class="font-semibold text-on-surface">
+                                        @branch.BranchName
+                                    </div>
+                                </td>
+
+                                <td class="py-3.5 px-4 text-on-surface-variant">
+                                    @branch.CityName
+                                </td>
+
+                                <td class="py-3.5 px-4 font-semibold text-on-surface">
+                                    @branch.OutgoingCargoCount.ToString("N0")
+                                </td>
+
+                                <td class="py-3.5 px-4 font-semibold text-on-surface">
+                                    @branch.IncomingCargoCount.ToString("N0")
+                                </td>
+
+                                <td class="py-3.5 px-4 text-right">
+                                    <span class="font-bold text-on-surface">
+                                        @branch.TotalCargoCount.ToString("N0")
+                                    </span>
+                                </td>
+
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="6" class="py-8 px-4 text-center text-on-surface-variant">
+                                Henüz şube istatistiği bulunmuyor.
+                            </td>
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+</main>
+

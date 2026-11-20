@@ -1,0 +1,137 @@
+﻿@using DtoLayer.DTOs.CargoDtos
+@using EntityLayer.Entities.Enums
+@model List<UserIncomingCargoDto>
+@{
+    ViewData["Title"] = "MyCargos";
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
+}
+
+<main class="md:ml-64 pt-20 pb-16 px-4 md:px-space-xl max-w-[1600px] mx-auto space-y-6">
+    <section class="bg-surface-container-lowest rounded-2xl border border-surface-container elevation-1 overflow-hidden">
+        <!-- Liste Üst Başlığı ve Tab Navigasyonu -->
+        <div class="p-space-lg border-b border-surface-container flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div>
+                <h3 class="text-headline-md font-headline-md text-on-surface">Gelen Kargo Listesi</h3>
+           
+            </div>
+          
+        </div>
+        <!-- Tablo / Liste Görünümü -->
+        <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr class="bg-surface border-b border-surface-container text-label-sm font-label-sm text-on-surface-variant uppercase tracking-wider">
+                        <th class="py-3 px-space-lg">Takip No / Tür</th>
+                        <th class="py-3 px-4">Gönderici / Alıcı</th>
+                        <th class="py-3 px-4">İçerik &amp; Rota</th>
+                        <th class="py-3 px-4">Tahmini Varış</th>
+                        <th class="py-3 px-4">Durum Rozeti</th>
+                        <th class="py-3 px-space-lg text-right">Aksiyonlar</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-surface-container">
+
+                <tbody class="divide-y divide-surface-container">
+
+                    @if (Model != null && Model.Any())
+                    {
+                        @foreach (var cargo in Model)
+                        {
+                            <tr class="hover:bg-surface transition-colors group">
+
+                                <td class="py-4 px-space-lg">
+                                    <div class="font-semibold text-on-surface">
+                                        #@cargo.TrackCode
+                                    </div>
+
+                                    <span class="text-label-sm text-secondary font-medium">
+                                        @cargo.DeliveryType
+                                    </span>
+                                </td>
+
+                                <td class="py-4 px-4">
+                                    <div class="font-semibold text-on-surface">
+                                        @cargo.SenderFullName
+                                    </div>
+
+                                    <div class="text-label-sm text-on-surface-variant">
+                                        @cargo.ReceiverFullName
+                                    </div>
+                                </td>
+
+                                <td class="py-4 px-4">
+                                    <div class="text-on-surface font-medium">
+                                        @cargo.CargoType
+                                    </div>
+
+                                    <div class="text-label-sm text-on-surface-variant">
+                                        @cargo.OriginCityName → @cargo.DestinationCityName
+                                    </div>
+                                </td>
+
+                                <td class="py-4 px-4">
+                                    @if (cargo.CargoStatus == CargoStatus.Delivered)
+                                    {
+                                        <div class="font-semibold text-on-surface">
+                                            @cargo.ActualDeliveryDate?.ToString("dd.MM.yyyy HH:mm")
+                                        </div>
+                                        <div class="text-label-sm text-secondary">
+                                            Teslim Edildi
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="font-semibold text-on-surface">
+                                            @cargo.EstimatedArrivalDate.ToString("dd.MM.yyyy HH:mm")
+                                        </div>
+                                        <div class="text-label-sm text-secondary">
+                                            Tahmini Teslimat
+                                        </div>
+                                    }
+                                </td>
+                                <td class="py-4 px-4">
+                                    <span class="text-label-sm font-semibold">
+                                        @cargo.CargoStatus
+                                    </span>
+                                </td>
+
+                                <td class="py-4 px-space-lg text-right">
+                                    <div class="flex items-center justify-end gap-2">
+                                        <a asp-action="CargoDetail"
+                                           asp-route-id="@cargo.Id"
+                                           class="px-3 py-1.5 bg-surface-container text-on-surface text-label-sm rounded-lg">
+                                            Detayı Gör
+                                        </a>
+                                    </div>
+                                </td>
+
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="6" class="text-center py-8 text-on-surface-variant">
+                                Henüz gelen kargonuz bulunmuyor.
+                            </td>
+                        </tr>
+                    }
+
+                </tbody>
+                 
+                </tbody>
+            </table>
+        </div>
+        <!-- Tablo Alt Bilgi & Pagination -->
+        <div class="p-space-md bg-surface border-t border-surface-container flex flex-wrap items-center justify-between text-body-sm text-on-surface-variant">
+           
+            <div class="flex items-center gap-2">
+                <button class="px-2.5 py-1 rounded border border-surface-container bg-white text-on-surface hover:bg-surface-container-low transition disabled:opacity-40" disabled="">Önceki</button>
+                <span class="text-label-sm font-label-sm font-semibold text-on-surface">Sayfa 1 / 1</span>
+                <button class="px-2.5 py-1 rounded border border-surface-container bg-white text-on-surface hover:bg-surface-container-low transition disabled:opacity-40" disabled="">Sonraki</button>
+            </div>
+        </div>
+    </section>
+
+</main>
+

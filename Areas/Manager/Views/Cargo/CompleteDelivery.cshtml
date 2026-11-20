@@ -1,0 +1,96 @@
+﻿```cshtml
+@model MyAcademy_CargoTrack.Areas.Manager.Models.CompleteDeliveryViewModel
+
+@{
+    ViewData["Title"] = "Teslimatı Tamamla";
+    Layout = "~/Areas/Manager/Views/Shared/_ManagerLayout.cshtml";
+}
+
+<div class="ml-64 pt-16 min-h-screen bg-[#f8f9ff] p-8">
+
+    <div class="max-w-2xl mx-auto">
+
+        <div class="mb-8">
+            <h1 class="text-2xl font-bold text-gray-800">
+                Teslimatı Tamamla
+            </h1>
+            <p class="text-gray-500 mt-2">
+                Kargoyu teslim alan kişinin bilgilerini ve teslimat kodunu girin.
+            </p>
+        </div>
+
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
+
+            <form asp-area="Manager"
+                  asp-controller="Cargo"
+                  asp-action="CompleteDelivery"
+                  method="post">
+
+                @Html.AntiForgeryToken()
+
+                <input type="hidden" asp-for="CargoId" />
+
+                <div asp-validation-summary="ModelOnly"
+                     class="mb-5 text-sm text-red-600">
+                </div>
+
+                <div class="mb-6">
+                    <label asp-for="DeliveryCode"
+                           class="block text-sm font-semibold text-gray-700 mb-2">
+                        6 Haneli Teslimat Kodu
+                    </label>
+
+                    <input asp-for="DeliveryCode"
+                           type="text"
+                           inputmode="numeric"
+                           maxlength="6"
+                           placeholder="Örn. 123456"
+                           class="w-full rounded-xl border border-gray-200 px-4 py-3 outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100" />
+
+                    <span asp-validation-for="DeliveryCode"
+                          class="text-sm text-red-500 mt-1 block">
+                    </span>
+                </div>
+
+                <div class="mb-8">
+                    <label asp-for="RecipientName"
+                           class="block text-sm font-semibold text-gray-700 mb-2">
+                        Teslim Alan Kişinin Adı
+                    </label>
+
+                    <input asp-for="RecipientName"
+                           type="text"
+                           placeholder="Teslim alan kişinin adı ve soyadı"
+                           class="w-full rounded-xl border border-gray-200 px-4 py-3 outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100" />
+
+                    <span asp-validation-for="RecipientName"
+                          class="text-sm text-red-500 mt-1 block">
+                    </span>
+                </div>
+
+                <div class="flex items-center justify-end gap-3">
+                    <a asp-area="Manager"
+                       asp-controller="Cargo"
+                       asp-action="Incoming"
+                       class="px-5 py-3 rounded-xl border border-gray-200 text-gray-600 hover:bg-gray-50 transition">
+                        Vazgeç
+                    </a>
+
+                    <button type="submit"
+                            class="px-5 py-3 rounded-xl bg-indigo-600 text-white font-semibold hover:bg-indigo-700 transition">
+                        Teslimatı Onayla
+                    </button>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+```

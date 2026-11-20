@@ -1,0 +1,74 @@
+﻿@using DtoLayer.DTOs.CargoDtos
+@model ManagerBranchStatisticDto
+
+@{
+    Layout = null;
+}
+
+<div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5 mb-8">
+
+    @* Toplam Kargo *@
+    <a href="/Manager/Cargo/Index"
+       class="bg-white border border-slate-200 rounded-2xl p-5 hover:shadow-md hover:border-indigo-200 transition">
+        <div class="flex items-center justify-between">
+            <div class="w-11 h-11 rounded-xl bg-indigo-50 flex items-center justify-center">
+                <i class="fa-solid fa-boxes-stacked text-indigo-600 text-lg"></i>
+            </div>
+            <i class="fa-solid fa-arrow-up-right-from-square text-slate-300"></i>
+        </div>
+        <p class="text-sm text-slate-500 mt-5">Toplam Kargo</p>
+        <h2 class="text-3xl font-bold text-slate-800 mt-1">
+            @Model.TotalCargoCount.ToString("N0")
+        </h2>
+        <p class="text-xs text-slate-400 mt-2">Şubenin çıkış ve varış kargoları</p>
+    </a>
+
+    @* Bugün Oluşturulan *@
+    <a href="/Manager/Cargo/Index"
+       class="bg-white border border-slate-200 rounded-2xl p-5 hover:shadow-md hover:border-blue-200 transition">
+        <div class="flex items-center justify-between">
+            <div class="w-11 h-11 rounded-xl bg-blue-50 flex items-center justify-center">
+                <i class="fa-solid fa-calendar-plus text-blue-600 text-lg"></i>
+            </div>
+            <i class="fa-solid fa-arrow-up-right-from-square text-slate-300"></i>
+        </div>
+        <p class="text-sm text-slate-500 mt-5">Bugün Oluşturulan</p>
+        <h2 class="text-3xl font-bold text-slate-800 mt-1">
+            @Model.TodayCreatedCargoCount.ToString("N0")
+        </h2>
+        <p class="text-xs text-slate-400 mt-2">Bugün şubede oluşturulan gönderiler</p>
+    </a>
+
+    @* Geciken Kargolar *@
+    <a href="/Manager/Cargo/Delayed"
+       class="bg-white border border-slate-200 rounded-2xl p-5 hover:shadow-md hover:border-red-200 transition">
+        <div class="flex items-center justify-between">
+            <div class="w-11 h-11 rounded-xl bg-red-50 flex items-center justify-center">
+                <i class="fa-solid fa-clock text-red-600 text-lg"></i>
+            </div>
+            <span class="text-xs font-bold text-red-600 bg-red-50 px-2.5 py-1 rounded-full">Dikkat</span>
+        </div>
+        <p class="text-sm text-slate-500 mt-5">Geciken Kargolar</p>
+        <h2 class="text-3xl font-bold text-red-600 mt-1">
+            @Model.DelayedCargoCount.ToString("N0")
+        </h2>
+        <p class="text-xs text-slate-400 mt-2">Tahmini teslim tarihi geçmiş</p>
+    </a>
+
+    @* Çözülmemiş Sorunlar *@
+    <a href="/Manager/DeliveryException/Index"
+       class="bg-white border border-slate-200 rounded-2xl p-5 hover:shadow-md hover:border-amber-200 transition">
+        <div class="flex items-center justify-between">
+            <div class="w-11 h-11 rounded-xl bg-amber-50 flex items-center justify-center">
+                <i class="fa-solid fa-triangle-exclamation text-amber-600 text-lg"></i>
+            </div>
+            <span class="text-xs font-bold text-amber-600 bg-amber-50 px-2.5 py-1 rounded-full">İnceleme</span>
+        </div>
+        <p class="text-sm text-slate-500 mt-5">Çözülmemiş Sorunlar</p>
+        <h2 class="text-3xl font-bold text-amber-600 mt-1">
+            @Model.UnresolvedProblemCount.ToString("N0")
+        </h2>
+        <p class="text-xs text-slate-400 mt-2">Müdahale bekleyen teslimat sorunları</p>
+    </a>
+
+</div>

@@ -1,0 +1,152 @@
+﻿@using DtoLayer.DTOs.CargoDtos
+@using EntityLayer.Entities.Enums
+@model List<DelayedCargoDto>
+
+@{
+    ViewData["Title"] = "Geciken Kargolar";
+    Layout = "~/Views/Shared/_ManagerLayout.cshtml";
+}
+
+<main class="md:ml-64 pt-20 pb-16 px-4 md:px-space-xl max-w-[1600px] mx-auto space-y-6">
+    <section class="bg-surface-container-lowest rounded-2xl border border-surface-container elevation-1 overflow-hidden">
+
+        <div class="mb-5">
+            <a href="/Manager/Dashboard/Index"
+               class="inline-flex items-center gap-2 text-sm font-semibold text-slate-500 hover:text-indigo-600 transition">
+                <i class="fa-solid fa-arrow-left"></i>
+                Dashboard'a Dön
+            </a>
+        </div>
+
+        <div class="bg-white border border-slate-200 rounded-2xl shadow-sm mb-6">
+
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 p-6 border-b border-slate-100">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-red-50 flex items-center justify-center">
+                        <i class="fa-solid fa-clock text-red-600"></i>
+                    </div>
+
+                    <div>
+                        <h2 class="font-bold text-slate-800">Geciken Kargolar</h2>
+                        <p class="text-xs text-slate-500 mt-1">
+                            Teslimat tarihi geçmiş ve henüz teslim edilmemiş gönderiler
+                        </p>
+                    </div>
+                </div>
+
+                <span class="text-sm font-semibold text-slate-500">
+                    Toplam: @Model.Count() kargo
+                </span>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm text-left">
+
+                    <thead class="bg-slate-50 text-xs text-slate-500 uppercase">
+                        <tr>
+                            <th class="px-6 py-4">Takip Kodu</th>
+                            <th class="px-6 py-4">Varış Şubesi</th>
+                            <th class="px-6 py-4">Tahmini Teslimat</th>
+                            <th class="px-6 py-4">Gecikme</th>
+                            <th class="px-6 py-4">Son Durum</th>
+                            <th class="px-6 py-4 text-right">İşlem</th>
+                        </tr>
+                    </thead>
+
+                    <tbody class="divide-y divide-slate-100">
+
+                        @if (Model != null && Model.Any())
+                        {
+                            @foreach (var item in Model)
+                            {
+                                <tr class="hover:bg-red-50/30 transition">
+
+                                    <td class="px-6 py-4 font-bold text-indigo-600">
+                                        @item.TrackCode
+                                    </td>
+
+                                    <td class="px-6 py-4 text-slate-600">
+                                        @item.DestinationBranch
+                                    </td>
+
+                                    <td class="px-6 py-4 text-slate-600">
+                                        @item.EstimatedArrivalDate.ToString("dd.MM.yyyy")
+                                    </td>
+
+                                    <td class="px-6 py-4">
+                                        <span class="bg-red-50 text-red-700 px-3 py-1.5 rounded-lg text-xs font-bold">
+                                            @item.DelayDays gün
+                                        </span>
+                                    </td>
+
+                                    <td class="px-6 py-4">
+                                        <span class="text-xs font-medium
+                                                    @(item.CargoStatus == CargoStatus.InTransferCenter ? "text-violet-700" :
+                                                                                            item.CargoStatus == CargoStatus.AtOriginBranch ? "text-amber-700" :
+                                                                                            item.CargoStatus == CargoStatus.AtDestinationBranch ? "text-blue-700" :
+                                                                                            item.CargoStatus == CargoStatus.OutForDelivery ? "text-indigo-700" :
+                                                                                            "text-slate-600")">
+                                    @switch (item.CargoStatus)
+                                            {
+                                                case CargoStatus.Created:
+                                                    @:Oluşturuldu
+                                                    break;
+                                                case CargoStatus.AtOriginBranch:
+                                                    @:Çıkış Şubesinde
+                                                    break;
+                                                case CargoStatus.InTransferCenter:
+                                                    @:Transfer Merkezinde
+                                                    break;
+                                                case CargoStatus.AtDestinationBranch:
+                                                    @:Varış Şubesinde
+                                                    break;
+                                                case CargoStatus.OutForDelivery:
+                                                    @:Dağıtımda
+                                                    break;
+                                                case CargoStatus.DeliveryFailed:
+                                                    @:Teslim Edilemedi
+                                                    break;
+                                                case CargoStatus.ReturnInProgress:
+                                                    @:İade Sürecinde
+                                                    break;
+                                                default:
+                                                    @item.CargoStatus
+                                                    break;
+                                            }
+                                        </span>
+                                    </td>
+
+                                    <td class="px-6 py-4 text-right">
+                                        <a href="/Manager/Cargo/Detail/@item.CargoId"
+                                           class="text-indigo-600 font-semibold hover:underline">
+                                            Detay
+                                        </a>
+                                    </td>
+
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="6" class="px-6 py-12 text-center">
+                                    <div class="flex flex-col items-center gap-3 text-slate-400">
+                                        <i class="fa-solid fa-circle-check text-3xl text-emerald-500"></i>
+                                        <span class="font-semibold text-slate-600">
+                                            Geciken kargo bulunmuyor.
+                                        </span>
+                                        <span class="text-xs">
+                                            Şubenize ait gecikmiş gönderi bulunmamaktadır.
+                                        </span>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </section>
+</main>

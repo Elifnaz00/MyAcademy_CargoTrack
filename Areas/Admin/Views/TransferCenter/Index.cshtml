@@ -1,0 +1,173 @@
+﻿@model List<DtoLayer.DTOs.TransferCenterDtos.TransferCenterListDto>
+
+@{
+    ViewData["Title"] = "Transfer Merkezleri";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<main class="ml-64 pt-20 px-8 pb-12">
+
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+        <div>
+            <h1 class="text-headline-lg font-headline-lg text-on-surface">
+                Transfer Merkezi Yönetimi
+            </h1>
+            <p class="text-body-md text-on-surface-variant mt-1">
+                Transfer merkezlerini görüntüleyebilir ve yönetebilirsiniz.
+            </p>
+        </div>
+
+        <a asp-area="Admin"
+           asp-controller="TransferCenter"
+           asp-action="Create"
+           class="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-primary text-on-primary font-medium hover:opacity-90 transition">
+           
+            Yeni Transfer Merkezi
+        </a>
+    </div>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="mb-5 p-4 rounded-xl bg-green-50 border border-green-200 text-green-700">
+            @TempData["Success"]
+        </div>
+    }
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="mb-5 p-4 rounded-xl bg-red-50 border border-red-200 text-red-700">
+            @TempData["Error"]
+        </div>
+    }
+
+    <section class="p-6 rounded-xl bg-surface-container-lowest border border-outline-variant/30 shadow-sm">
+
+        <div class="flex items-center justify-between mb-6">
+            <div>
+                <h2 class="text-title-lg font-title-lg text-on-surface">
+                    Transfer Merkezleri
+                </h2>
+                <p class="text-body-sm text-on-surface-variant mt-1">
+                    Sistemde kayıtlı transfer merkezleri.
+                </p>
+            </div>
+
+            <span class="text-sm text-on-surface-variant">
+                Toplam: @Model.Count merkez
+            </span>
+        </div>
+
+        <div class="overflow-x-auto">
+            <table class="w-full text-left">
+                <thead>
+                    <tr class="border-b border-outline-variant/50 text-on-surface-variant text-sm">
+                        <th class="py-4 px-3 font-medium">#</th>
+                        <th class="py-4 px-3 font-medium">Merkez Adı</th>
+                        <th class="py-4 px-3 font-medium">Merkez Kodu</th>
+                        <th class="py-4 px-3 font-medium">Şehir</th>
+                        <th class="py-4 px-3 font-medium">Adres</th>
+                        <th class="py-4 px-3 font-medium">Durum</th>
+                        <th class="py-4 px-3 font-medium text-right">İşlemler</th>
+                    </tr>
+                </thead>
+
+                <tbody class="divide-y divide-outline-variant/30">
+
+                    @if (Model != null && Model.Any())
+                    {
+                        @foreach (var center in Model)
+                        {
+                            <tr class="hover:bg-surface-container-low transition">
+                                <td class="py-4 px-3 text-sm text-on-surface-variant">
+                                    @(Model.IndexOf(center) + 1)
+                                </td>
+
+                                <td class="py-4 px-3 text-sm font-medium text-on-surface">
+                                    @center.Name
+                                </td>
+
+                                <td class="py-4 px-3 text-sm text-on-surface">
+                                    @center.Code
+                                </td>
+
+                                <td class="py-4 px-3 text-sm text-on-surface">
+                                    @center.CityName
+                                </td>
+
+                                <td class="py-4 px-3 text-sm text-on-surface-variant max-w-xs truncate">
+                                    @center.FullAddress
+                                </td>
+
+                                <td class="py-4 px-3">
+                                    @if (center.IsActive)
+                                    {
+                                        <span class="inline-flex px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700">
+                                            Aktif
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="inline-flex px-3 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-600">
+                                            Pasif
+                                        </span>
+                                    }
+                                </td>
+
+                                <td class="py-4 px-3">
+                                    <div class="flex items-center justify-end gap-2">
+
+                                        <a asp-area="Admin"
+                                           asp-controller="TransferCenter"
+                                           asp-action="Edit"
+                                           asp-route-id="@center.Id"
+                                           class="px-3 py-2 rounded-lg text-sm bg-surface-container-high text-on-surface hover:opacity-80 transition">
+                                            Düzenle
+                                        </a>
+
+                                        <form asp-area="Admin"
+                                              asp-controller="TransferCenter"
+                                              asp-action="ChangeStatus"
+                                              method="post">
+                                            @Html.AntiForgeryToken()
+                                            <input type="hidden" name="id" value="@center.Id" />
+                                            <input type="hidden" name="isActive" value="@(!center.IsActive)" />
+
+                                            <button type="submit"
+                                                    class="px-3 py-2 rounded-lg text-sm bg-secondary-container text-on-secondary-container hover:opacity-80 transition">
+                                                @(center.IsActive ? "Pasife Al" : "Aktifleştir")
+                                            </button>
+                                        </form>
+
+                                        <form asp-area="Admin"
+                                              asp-controller="TransferCenter"
+                                              asp-action="Delete"
+                                              method="post"
+                                              onsubmit="return confirm('Bu transfer merkezini silmek istediğinize emin misiniz?');">
+                                            @Html.AntiForgeryToken()
+                                            <input type="hidden" name="id" value="@center.Id" />
+
+                                            <button type="submit"
+                                                    class="px-3 py-2 rounded-lg text-sm bg-error-container text-on-error-container hover:opacity-80 transition">
+                                                Sil
+                                            </button>
+                                        </form>
+
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="7" class="py-12 text-center text-on-surface-variant">
+                                Henüz kayıtlı transfer merkezi bulunmuyor.
+                            </td>
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+        </div>
+    </section>
+</main>

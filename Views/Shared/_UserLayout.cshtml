@@ -1,0 +1,355 @@
+﻿<!DOCTYPE html>
+
+<html lang="tr">
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Lojistik Portal - Kargo &amp; Lojistik Müşteri Paneli</title>
+    <!-- Material Symbols Outlined -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet" />
+    <!-- Google Fonts: Plus Jakarta Sans & Inter -->
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Plus+Jakarta+Sans:wght@500;600;700;800&amp;display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet" />
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
+    <!-- Tailwind CSS v3 with Plugins -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <!-- Theme Configuration -->
+    <script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                "surface-tint": "#565e74",
+                "on-tertiary-fixed-variant": "#005236",
+                "surface": "#f8f9ff",
+                "primary-container": "#131b2e",
+                "inverse-on-surface": "#eaf1ff",
+                "on-error": "#ffffff",
+                "outline-variant": "#c6c6cd",
+                "on-primary": "#ffffff",
+                "inverse-primary": "#bec6e0",
+                "tertiary-container": "#002113",
+                "on-primary-fixed-variant": "#3f465c",
+                "secondary-fixed": "#ffdbce",
+                "surface-container-lowest": "#ffffff",
+                "secondary": "#a73a00",
+                "surface-container-high": "#dce9ff",
+                "on-secondary-fixed-variant": "#7f2b00",
+                "surface-variant": "#d3e4fe",
+                "on-surface": "#0b1c30",
+                "on-tertiary": "#ffffff",
+                "tertiary-fixed-dim": "#4edea3",
+                "primary-fixed-dim": "#bec6e0",
+                "on-background": "#0b1c30",
+                "surface-dim": "#cbdbf5",
+                "secondary-fixed-dim": "#ffb599",
+                "primary": "#000000",
+                "surface-bright": "#f8f9ff",
+                "background": "#f8f9ff",
+                "surface-container-highest": "#d3e4fe",
+                "on-surface-variant": "#45464d",
+                "surface-container": "#e5eeff",
+                "on-tertiary-fixed": "#002113",
+                "on-error-container": "#93000a",
+                "tertiary": "#000000",
+                "surface-container-low": "#eff4ff",
+                "on-secondary": "#ffffff",
+                "on-tertiary-container": "#009668",
+                "primary-fixed": "#dae2fd",
+                "error": "#ba1a1a",
+                "tertiary-fixed": "#6ffbbe",
+                "error-container": "#ffdad6",
+                "on-primary-fixed": "#131b2e",
+                "inverse-surface": "#213145",
+                "on-secondary-container": "#571a00",
+                "on-secondary-fixed": "#370e00",
+                "outline": "#76777d",
+                "on-primary-container": "#7c839b",
+                "secondary-container": "#fd651e"
+              },
+              "borderRadius": {
+                "DEFAULT": "0.25rem",
+                "lg": "0.5rem",
+                "xl": "0.75rem",
+                "full": "9999px"
+              },
+              "spacing": {
+                "space-xs": "0.25rem",
+                "space-sm": "0.5rem",
+                "space-md": "1rem",
+                "space-lg": "1.5rem",
+                "space-xl": "2rem",
+                "space-2xl": "3rem",
+                "gutter": "1.5rem",
+                "gutter-sm": "1rem",
+                "margin": "2rem",
+                "margin-mobile": "1rem"
+              },
+              "fontFamily": {
+                "headline-lg-mobile": ["Plus Jakarta Sans"],
+                "code-tracking": ["Inter"],
+                "metric-number": ["Plus Jakarta Sans"],
+                "display-mobile": ["Plus Jakarta Sans"],
+                "display": ["Plus Jakarta Sans"],
+                "label-sm": ["Inter"],
+                "body-lg": ["Inter"],
+                "headline-md": ["Plus Jakarta Sans"],
+                "headline-sm": ["Plus Jakarta Sans"],
+                "label-md": ["Inter"],
+                "body-sm": ["Inter"],
+                "body-md": ["Inter"],
+                "headline-lg": ["Plus Jakarta Sans"],
+                "label-lg": ["Inter"]
+              },
+              "fontSize": {
+                "headline-lg-mobile": ["22px", { "lineHeight": "30px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                "code-tracking": ["13px", { "lineHeight": "18px", "letterSpacing": "0.04em", "fontWeight": "600" }],
+                "metric-number": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                "display-mobile": ["28px", { "lineHeight": "36px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                "display": ["36px", { "lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                "label-sm": ["11px", { "lineHeight": "14px", "letterSpacing": "0.02em", "fontWeight": "600" }],
+                "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                "headline-md": ["20px", { "lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                "headline-sm": ["16px", { "lineHeight": "24px", "fontWeight": "600" }],
+                "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.01em", "fontWeight": "600" }],
+                "body-sm": ["12px", { "lineHeight": "16px", "fontWeight": "400" }],
+                "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                "headline-lg": ["28px", { "lineHeight": "36px", "letterSpacing": "-0.015em", "fontWeight": "600" }],
+                "label-lg": ["14px", { "lineHeight": "20px", "fontWeight": "500" }]
+              }
+            }
+          }
+        };
+    </script>
+    <style>
+        /* Custom Micro-Scrollbar & Elevation tokens */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 9999px;
+        }
+
+            ::-webkit-scrollbar-thumb:hover {
+                background: #94a3b8;
+            }
+
+        .elevation-1 {
+            box-shadow: 0 1px 3px 0 rgba(15, 23, 42, 0.04), 0 1px 2px -1px rgba(15, 23, 42, 0.04);
+        }
+
+        .elevation-2 {
+            box-shadow: 0 4px 6px -1px rgba(15, 23, 42, 0.07), 0 2px 4px -2px rgba(15, 23, 42, 0.05);
+        }
+
+        .elevation-3 {
+            box-shadow: 0 12px 24px -4px rgba(15, 23, 42, 0.12), 0 4px 8px -2px rgba(15, 23, 42, 0.04);
+        }
+
+        .pulse-glow {
+            animation: pulseGlow 2s infinite ease-in-out;
+        }
+        @@keyframes pulseGlow {
+            0%, 100%
+
+        {
+            transform: scale(1);
+            opacity: 1;
+        }
+
+        50% {
+            transform: scale(1.15);
+            opacity: 0.75;
+        }
+
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface antialiased font-body-md min-h-screen">
+    <!-- ========================================================== -->
+    <!-- 1. SHARED COMPONENT: SideNavBar (Fixed Left Desktop Sidebar) -->
+    <!-- ========================================================== -->
+    <aside class="w-64 min-h-screen fixed left-0 top-0 flex flex-col bg-surface-container-lowest dark:bg-surface border-r border-outline-variant dark:border-outline z-40 hidden md:flex">
+        <!-- Sidebar Header & Brand Anchor -->
+        <div class="p-space-lg flex items-center gap-3 border-b border-surface-container">
+            <div class="w-10 h-10 rounded-xl bg-secondary-container flex items-center justify-center text-on-secondary shadow-sm">
+                <span class="material-symbols-outlined" data-icon="local_shipping" style="font-variation-settings: 'FILL' 1;">local_shipping</span>
+            </div>
+            <div>
+                <h1 class="text-headline-sm font-headline-sm text-on-surface tracking-tight leading-tight">Lojistik Portal</h1>
+                <p class="text-label-sm font-label-sm text-on-surface-variant">Kargo Takip &amp; Yönetim</p>
+            </div>
+        </div>
+        <!-- CTA Button from Shared Component Spec -->
+        <div class="px-space-md pt-space-md">
+            <button class="w-full flex items-center justify-center gap-2 py-2.5 px-4 bg-secondary-container hover:bg-secondary text-on-secondary font-label-lg rounded-xl transition duration-150 ease-in-out shadow-sm shadow-orange-500/20">
+                <span class="material-symbols-outlined text-[18px]" data-icon="add">add</span>
+                <span>Yeni Gönderi Oluştur</span>
+            </button>
+        </div>
+        <!-- Navigation Tab Links (Active Item: 'Gösterge Paneli') -->
+        <nav class="flex-1 px-space-md py-4 space-y-1 overflow-y-auto">
+            <!-- 1. Gösterge Paneli (ACTIVE) -->
+            <a class="flex items-center gap-3 px-4 py-3 bg-secondary-container dark:bg-secondary text-on-secondary-container dark:text-on-secondary rounded-lg font-semibold transition duration-150 ease-in-out" href="/User/User/Index">
+                <span class="material-symbols-outlined" data-icon="dashboard" style="font-variation-settings: 'FILL' 1;">dashboard</span>
+                <span class="text-label-md font-label-md">Gösterge Paneli</span>
+            </a>
+            <!-- 2. Gelen Kargolarım -->
+            <a class="flex items-center justify-between px-4 py-3 text-on-surface-variant dark:text-on-surface hover:bg-surface-container-low dark:hover:bg-inverse-surface rounded-lg transition duration-150 ease-in-out group" href="/User/User/MyCargos">
+                <div class="flex items-center gap-3">
+                    <span class="material-symbols-outlined group-hover:text-secondary transition-colors" data-icon="move_to_inbox">move_to_inbox</span>
+                    <span class="text-label-md font-label-md">Kargolarım</span>
+                </div>
+                <span class="px-2 py-0.5 text-[10px] font-bold rounded-full bg-surface-container text-on-surface">3</span>
+            </a>
+            <a class="flex items-center justify-between px-4 py-3 text-on-surface-variant dark:text-on-surface hover:bg-surface-container-low dark:hover:bg-inverse-surface rounded-lg transition duration-150 ease-in-out group" href="/User/User/MyDeliveryCodes">
+                <div class="flex items-center gap-3">
+                    <span class="material-symbols-outlined group-hover:text-secondary transition-colors" data-icon="move_to_inbox">move_to_inbox</span>
+                    <span class="text-label-md font-label-md">Teslimat Kodlarım</span>
+                </div>
+                <span class="px-2 py-0.5 text-[10px] font-bold rounded-full bg-surface-container text-on-surface">3</span>
+            </a>
+         
+         
+            <!-- 4. Teslimat Geçmişi -->
+            <a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-on-surface hover:bg-surface-container-low dark:hover:bg-inverse-surface rounded-lg transition duration-150 ease-in-out group" href="/User/User/DeliveryHistory">
+                <span class="material-symbols-outlined group-hover:text-secondary transition-colors" data-icon="history">history</span>
+                <span class="text-label-md font-label-md">Teslimat Geçmişi</span>
+            </a>
+            <!-- 5. Adres Defteri -->
+            <a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-on-surface hover:bg-surface-container-low dark:hover:bg-inverse-surface rounded-lg transition duration-150 ease-in-out group" href="#">
+                <span class="material-symbols-outlined group-hover:text-secondary transition-colors" data-icon="menu_book">menu_book</span>
+                <span class="text-label-md font-label-md">Adres Defteri</span>
+            </a>
+            <!-- 6. Bildirimler -->
+            <a class="flex items-center justify-between px-4 py-3 text-on-surface-variant dark:text-on-surface hover:bg-surface-container-low dark:hover:bg-inverse-surface rounded-lg transition duration-150 ease-in-out group" href="#">
+                <div class="flex items-center gap-3">
+                    <span class="material-symbols-outlined group-hover:text-secondary transition-colors" data-icon="notifications">notifications</span>
+                    <span class="text-label-md font-label-md">Bildirimler</span>
+                </div>
+                <span class="w-2 h-2 rounded-full bg-secondary-container"></span>
+            </a>
+            <!-- 7. Ayarlar -->
+            <a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-on-surface hover:bg-surface-container-low dark:hover:bg-inverse-surface rounded-lg transition duration-150 ease-in-out group" href="#">
+                <span class="material-symbols-outlined group-hover:text-secondary transition-colors" data-icon="settings">settings</span>
+                <span class="text-label-md font-label-md">Ayarlar</span>
+            </a>
+        </nav>
+        <!-- Sidebar Footer Tab -->
+        <div class="p-space-md border-t border-surface-container mt-auto">
+            <a class="flex items-center gap-3 px-4 py-2.5 text-on-surface-variant hover:bg-surface-container-low rounded-lg transition duration-150 ease-in-out" href="#">
+                <span class="material-symbols-outlined text-secondary" data-icon="help">help</span>
+                <div class="flex flex-col">
+                    <span class="text-label-md font-label-md">Destek &amp; Yardım</span>
+                    <span class="text-label-sm font-label-sm text-on-surface-variant">7/24 Müşteri Hattı</span>
+                </div>
+            </a>
+        </div>
+    </aside>
+    <!-- ========================================================== -->
+    <!-- 2. SHARED COMPONENT: TopNavBar (Docked Full-width Top on Desktop) -->
+    <!-- ========================================================== -->
+    <header class="fixed top-0 right-0 left-0 md:left-64 h-16 bg-surface-container-lowest dark:bg-surface border-b border-outline-variant dark:border-outline px-4 md:px-space-lg flex justify-between items-center z-30 shadow-sm">
+        <!-- Search Bar on Left -->
+        <div class="flex-1 max-w-xl">
+            <div class="relative w-full flex items-center">
+                <span class="material-symbols-outlined absolute left-3 text-outline text-[20px]" data-icon="search">search</span>
+                <input class="w-full pl-10 pr-24 py-2 bg-surface rounded-xl border border-surface-container text-body-sm placeholder:text-outline focus:outline-none focus:ring-2 focus:ring-secondary/20 focus:border-secondary transition-all" placeholder="Takip No (örn: TR94820148) veya Gönderici Ara..." type="text" />
+                <button class="absolute right-1 px-3 py-1.5 bg-primary-container text-on-primary text-label-sm font-label-sm rounded-lg hover:bg-on-surface transition-colors">
+                    Sorgula
+                </button>
+            </div>
+        </div>
+        <!-- Trailing Icon Actions & Primary Action -->
+        <div class="flex items-center gap-2 md:gap-4 ml-3">
+            <!-- Trailing Action 1: Help -->
+            <button class="w-9 h-9 rounded-lg flex items-center justify-center text-on-surface-variant hover:bg-surface-container-low transition-colors" title="Yardım">
+                <span class="material-symbols-outlined" data-icon="help">help</span>
+            </button>
+            <!-- Trailing Action 2: Notifications -->
+            <div class="relative">
+                <button class="w-9 h-9 rounded-lg flex items-center justify-center text-on-surface-variant hover:bg-surface-container-low transition-colors" title="Bildirimler">
+                    <span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+                </button>
+                <span class="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-secondary-container"></span>
+            </div>
+            <!-- Trailing Primary Action: Kurye Çağır -->
+            <button class="hidden sm:flex items-center gap-1.5 py-1.5 px-3.5 bg-primary-container hover:bg-on-surface text-on-primary text-label-md font-label-md rounded-xl transition shadow-sm">
+                <span class="material-symbols-outlined text-[18px]" data-icon="electric_moped">electric_moped</span>
+                <span>Kurye Çağır</span>
+            </button>
+            <div class="h-6 w-px bg-surface-container mx-1"></div>
+            <!-- User Profile Header Avatar -->
+            <div class="flex items-center gap-2.5 cursor-pointer pl-1">
+                <img alt="Kullanıcı Profil Avatarı" class="w-9 h-9 rounded-full object-cover ring-2 ring-surface-container" data-alt="A refined professional portrait of Selin Hanım, an executive logistics client with a modern style, subtle studio backlighting, and a gentle confident expression, shot in high quality minimalist aesthetic with neutral corporate slate background tones." src="https://lh3.googleusercontent.com/aida-public/AB6AXuALXcvX3xHWm3W4n6ClSDRSYfaN59FKhaxW4Ybs5-ppW7xVgGzkXkTqPnOUKGJGbRAgsAiyS9yikPsFNEyWIOKjkrDvqtgPJ1rjIQTGrDGhcrOEX6N-Dak2jcKzoC_7OaIlkGZeucr6GwHxXU7uaHoKJ-i9gACg3cQUPfNxcyaiEh-zhHNpW80KtWiIdDcZWQgit4eJ9eIb8ztHDerq_y2FhTfMnx6-sWkfRv5RGWE" />
+                <div class="hidden xl:flex flex-col text-left">
+                    <span class="text-label-md font-label-md text-on-surface leading-tight">Selin Demir</span>
+                    <span class="text-label-sm font-label-sm text-on-surface-variant">Bireysel Müşteri</span>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- ========================================================== -->
+    <!-- MAIN CONTENT CANVAS -->
+    <!-- ========================================================== -->
+   @RenderBody()
+    <!-- ========================================================== -->
+    <!-- MOBILE BOTTOM NAVIGATION (Responsive Pivot: md:hidden) -->
+    <!-- ========================================================== -->
+    <nav class="md:hidden fixed bottom-0 left-0 right-0 bg-surface-container-lowest border-t border-surface-container px-3 py-2 flex items-center justify-around z-50 shadow-lg">
+        <a class="flex flex-col items-center text-secondary" href="#">
+            <span class="material-symbols-outlined text-[22px]" data-icon="dashboard" style="font-variation-settings: 'FILL' 1;">dashboard</span>
+            <span class="text-[10px] font-semibold mt-0.5">Gösterge</span>
+        </a>
+        <a class="flex flex-col items-center text-on-surface-variant hover:text-on-surface" href="#">
+            <span class="material-symbols-outlined text-[22px]" data-icon="move_to_inbox">move_to_inbox</span>
+            <span class="text-[10px] font-medium mt-0.5">Gelenler</span>
+        </a>
+        <button class="w-12 h-12 -mt-5 rounded-full bg-secondary-container text-on-secondary flex items-center justify-center shadow-lg border-2 border-white">
+            <span class="material-symbols-outlined text-[24px]" data-icon="add">add</span>
+        </button>
+        <a class="flex flex-col items-center text-on-surface-variant hover:text-on-surface" href="#">
+            <span class="material-symbols-outlined text-[22px]" data-icon="outbox">outbox</span>
+            <span class="text-[10px] font-medium mt-0.5">Gidenler</span>
+        </a>
+        <a class="flex flex-col items-center text-on-surface-variant hover:text-on-surface" href="#">
+            <span class="material-symbols-outlined text-[22px]" data-icon="history">history</span>
+            <span class="text-[10px] font-medium mt-0.5">Geçmiş</span>
+        </a>
+    </nav>
+    <!-- ========================================================== -->
+    <!-- LIGHTWEIGHT INTERACTIVITY SCRIPT -->
+    <!-- ========================================================== -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+          // Copy tracking code helper micro-interaction
+          const copyButtons = document.querySelectorAll('button[title="Kodu Kopyala"]');
+          copyButtons.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+              e.stopPropagation();
+              const codeEl = btn.parentElement.querySelector('span');
+              if (codeEl) {
+                navigator.clipboard.writeText(codeEl.innerText.replace('#', ''));
+                const originalIcon = btn.innerHTML;
+                btn.innerHTML = `<span class="material-symbols-outlined text-[16px] text-emerald-600" data-icon="check">check</span>`;
+                setTimeout(() => {
+                  btn.innerHTML = originalIcon;
+                }, 1800);
+              }
+            });
+          });
+        });
+    </script>
+</body>
+</html>

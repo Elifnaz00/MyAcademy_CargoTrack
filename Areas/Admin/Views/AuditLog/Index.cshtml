@@ -1,0 +1,103 @@
+﻿@model List<DtoLayer.DTOs.AuditDtos.ResultAuditDto>
+
+@{
+    ViewData["Title"] = "İşlem Kayıtları";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<main class="ml-64 pt-20 px-8 pb-12">
+
+    <div class="mb-8">
+        <h1 class="text-2xl font-bold text-on-surface">İşlem Kayıtları</h1>
+        <p class="text-sm text-on-surface-variant mt-1">
+            Sistem kullanıcılarının gerçekleştirdiği işlemleri takip edin.
+        </p>
+    </div>
+
+    <section class="bg-surface-container-lowest rounded-2xl border border-outline-variant/30 shadow-sm overflow-hidden">
+
+        <div class="p-6 border-b border-outline-variant/30 flex items-center justify-between">
+            <div>
+                <h2 class="text-lg font-semibold text-on-surface">Audit Log Listesi</h2>
+                <p class="text-sm text-on-surface-variant mt-1">
+                    Gerçekleştirilen işlemlerin geçmişi.
+                </p>
+            </div>
+
+            <span class="px-3 py-1 rounded-full bg-surface-container text-sm font-medium text-on-surface">
+                Toplam: @(Model?.Count ?? 0) kayıt
+            </span>
+        </div>
+
+        @if (Model == null || !Model.Any())
+        {
+            <div class="p-12 text-center">
+                <div class="text-4xl mb-4">📋</div>
+                <h3 class="font-semibold text-on-surface mb-2">
+                    Henüz işlem kaydı bulunmuyor.
+                </h3>
+                <p class="text-sm text-on-surface-variant">
+                    Sistem üzerinde işlemler gerçekleştirildikçe kayıtlar burada listelenecek.
+                </p>
+            </div>
+        }
+        else
+        {
+            <div class="overflow-x-auto">
+                <table class="w-full text-left">
+                    <thead class="bg-surface-container-low text-sm text-on-surface-variant">
+                        <tr>
+                            <th class="px-6 py-4 font-semibold">Kullanıcı</th>
+                            <th class="px-6 py-4 font-semibold">İşlem</th>
+                            <th class="px-6 py-4 font-semibold">Entity</th>
+                            <th class="px-6 py-4 font-semibold">Kayıt ID</th>
+                            <th class="px-6 py-4 font-semibold">Açıklama</th>
+                            <th class="px-6 py-4 font-semibold">Eski Durum</th>
+                            <th class="px-6 py-4 font-semibold">Yeni Durum</th>
+                            <th class="px-6 py-4 font-semibold">Tarih</th>
+                        </tr>
+                    </thead>
+
+                    <tbody class="divide-y divide-outline-variant/30">
+                        @foreach (var item in Model)
+                        {
+                            <tr class="hover:bg-surface-container-low/60 transition">
+                                <td class="px-6 py-4 text-sm font-medium text-on-surface">
+                                    @item.UserFullName
+                                </td>
+
+                                <td class="px-6 py-4">
+                                    <span class="px-3 py-1 rounded-full text-xs font-semibold bg-primary/10 text-primary">
+                                        @item.Action
+                                    </span>
+                                </td>
+
+                                <td class="px-6 py-4 text-sm text-on-surface">
+                                    @item.EntityName
+                                </td>
+
+                                <td class="px-6 py-4 text-xs text-on-surface-variant">
+                                    @(item.EntityId ?? "-")
+                                </td>
+
+                                <td class="px-6 py-4 text-sm text-on-surface-variant">
+                                    @(item.Description ?? "-")
+                                </td>
+                                  <td class="px-6 py-4 text-sm text-on-surface-variant">
+                                    @(item.OldValue ?? "-")
+                                </td>
+                                <td class="px-6 py-4 text-sm text-on-surface-variant">
+                                    @(item.NewValue ?? "-")
+                                </td>
+
+                                <td class="px-6 py-4 text-sm text-on-surface-variant whitespace-nowrap">
+                                    @item.CreatedDate.ToString("dd.MM.yyyy HH:mm")
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </section>
+</main>

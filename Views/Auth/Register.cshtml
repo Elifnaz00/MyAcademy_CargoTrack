@@ -1,0 +1,202 @@
+﻿@model RegisterViewModel
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Hesap Oluştur - KargoHQ Lojistik Teknolojileri</title>
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Plus+Jakarta+Sans:wght@600;700;800&amp;display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                "primary": "#000000",
+                "outline": "#76777d",
+                "on-primary": "#ffffff",
+                "inverse-primary": "#bec6e0",
+                "on-primary-container": "#7c839b",
+                "on-error-container": "#93000a",
+                "tertiary": "#000000",
+                "inverse-on-surface": "#eaf1ff",
+                "surface-dim": "#cbdbf5",
+                "surface-container": "#e5eeff",
+                "background": "#f8f9ff",
+                "surface-container-lowest": "#ffffff",
+                "on-error": "#ffffff",
+                "tertiary-container": "#002113",
+                "outline-variant": "#c6c6cd",
+                "on-surface-variant": "#45464d",
+                "on-tertiary": "#ffffff",
+                "primary-fixed-dim": "#bec6e0",
+                "surface-container-high": "#dce9ff",
+                "secondary": "#a73a00",
+                "secondary-fixed": "#ffdbce",
+                "on-secondary-container": "#571a00",
+                "tertiary-fixed": "#6ffbbe",
+                "surface-tint": "#565e74",
+                "on-tertiary-fixed-variant": "#005236",
+                "on-tertiary-fixed": "#002113",
+                "on-secondary": "#ffffff",
+                "on-secondary-fixed-variant": "#7f2b00",
+                "surface-container-highest": "#d3e4fe",
+                "on-primary-fixed": "#131b2e",
+                "primary-fixed": "#dae2fd",
+                "tertiary-fixed-dim": "#4edea3",
+                "secondary-fixed-dim": "#ffb599",
+                "on-background": "#0b1c30",
+                "primary-container": "#131b2e",
+                "surface-bright": "#f8f9ff",
+                "on-primary-fixed-variant": "#3f465c",
+                "surface-variant": "#d3e4fe",
+                "surface-container-low": "#eff4ff",
+                "secondary-container": "#fd651e",
+                "surface": "#f8f9ff",
+                "inverse-surface": "#213145",
+                "on-surface": "#0b1c30",
+                "on-tertiary-container": "#009668",
+                "on-secondary-fixed": "#370e00",
+                "error": "#ba1a1a",
+                "error-container": "#ffdad6"
+              },
+              "borderRadius": {
+                "DEFAULT": "0.25rem",
+                "lg": "0.5rem",
+                "xl": "0.75rem",
+                "full": "9999px"
+              },
+              "spacing": {
+                "space-xl": "2rem",
+                "margin-mobile": "1rem",
+                "space-sm": "0.5rem",
+                "space-lg": "1.5rem",
+                "gutter-sm": "1rem",
+                "space-md": "1rem",
+                "margin": "2rem",
+                "space-2xl": "3rem",
+                "gutter": "1.5rem",
+                "space-xs": "0.25rem"
+              },
+              "fontFamily": {
+                "headline-md": ["Plus Jakarta Sans"],
+                "code-tracking": ["Inter"],
+                "label-lg": ["Inter"],
+                "headline-lg-mobile": ["Plus Jakarta Sans"],
+                "display-mobile": ["Plus Jakarta Sans"],
+                "headline-lg": ["Plus Jakarta Sans"],
+                "body-md": ["Inter"],
+                "display": ["Plus Jakarta Sans"],
+                "metric-number": ["Plus Jakarta Sans"],
+                "body-sm": ["Inter"],
+                "body-lg": ["Inter"],
+                "headline-sm": ["Plus Jakarta Sans"],
+                "label-md": ["Inter"],
+                "label-sm": ["Inter"]
+              },
+              "fontSize": {
+                "headline-md": ["20px", { "lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                "code-tracking": ["13px", { "lineHeight": "18px", "letterSpacing": "0.04em", "fontWeight": "600" }],
+                "label-lg": ["14px", { "lineHeight": "20px", "fontWeight": "500" }],
+                "headline-lg-mobile": ["22px", { "lineHeight": "30px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                "display-mobile": ["28px", { "lineHeight": "36px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                "headline-lg": ["28px", { "lineHeight": "36px", "letterSpacing": "-0.015em", "fontWeight": "600" }],
+                "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                "display": ["36px", { "lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                "metric-number": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                "body-sm": ["12px", { "lineHeight": "16px", "fontWeight": "400" }],
+                "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                "headline-sm": ["16px", { "lineHeight": "24px", "fontWeight": "600" }],
+                "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.01em", "fontWeight": "600" }],
+                "label-sm": ["11px", { "lineHeight": "14px", "letterSpacing": "0.02em", "fontWeight": "600" }]
+              }
+            },
+          },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-surface font-body-md antialiased min-h-screen selection:bg-secondary-fixed selection:text-on-secondary-container">
+    <!-- Top Global Minimal Navigation Bar (Predictable TopNavBar) -->
+    <header class="w-full bg-surface-container-lowest border-b border-outline-variant/40 sticky top-0 z-50 shadow-sm">
+        <div class="w-full flex justify-between items-center h-16 px-space-lg md:px-margin max-w-7xl mx-auto">
+            <div class="flex items-center gap-space-lg">
+                <a class="flex items-center gap-2 text-headline-md font-headline-md font-bold tracking-tight text-on-surface" href="#">
+                    <div class="w-8 h-8 rounded-lg bg-primary-container flex items-center justify-center text-secondary-container shadow-sm">
+                        <span class="material-symbols-outlined text-[20px]" data-icon="local_shipping">local_shipping</span>
+                    </div>
+                    <span class="">KargoHQ</span>
+                </a>
+                <nav class="hidden md:flex items-center gap-6 border-l border-outline-variant/30 pl-space-lg">
+                    <a class="text-label-lg font-label-lg text-on-surface-variant hover:text-secondary transition-colors duration-150" href="#">Hakkımızda</a>
+                    <a class="text-label-lg font-label-lg text-on-surface-variant hover:text-secondary transition-colors duration-150" href="#">Çözümler</a>
+                    <a class="text-label-lg font-label-lg text-on-surface-variant hover:text-secondary transition-colors duration-150" href="#">Geliştirici API</a>
+                    <a class="text-label-lg font-label-lg text-on-surface-variant hover:text-secondary transition-colors duration-150" href="#">İletişim</a>
+                </nav>
+            </div>
+            <div class="flex items-center gap-space-md">
+                <button class="hidden sm:flex items-center gap-1.5 text-label-md font-label-md text-on-surface-variant hover:text-on-surface px-2.5 py-1.5 rounded border border-outline-variant/30 bg-surface-container-lowest" type="button">
+                    <span class="material-symbols-outlined text-[16px]" data-icon="language">language</span>
+                    <span class="">TR / EN</span>
+                </button>
+                <a class="flex items-center gap-1.5 text-label-lg font-label-lg text-on-surface-variant hover:text-secondary transition-colors" href="#">
+                    <span class="material-symbols-outlined text-[18px]" data-icon="help_outline">help_outline</span>
+                    <span class="hidden sm:inline">Yardım Merkezi</span>
+                </a>
+            </div>
+        </div>
+    </header>
+    <!-- Main Container: Split-Screen Register Layout -->
+    <main class="min-h-[calc(100vh-4rem)] flex items-center justify-center py-space-xl px-space-md sm:px-space-lg bg-surface-container-low"><div class="w-full max-w-xl bg-surface-container-lowest border border-outline-variant/40 rounded-xl p-space-lg md:p-space-xl shadow-sm"><div class="flex items-start justify-between mb-space-lg"><div><h1 class="text-headline-lg font-headline-lg text-on-surface">Yeni Hesap Oluştur</h1><p class="text-body-md text-on-surface-variant mt-1">KargoHQ hesabınızı oluşturup hemen kullanmaya başlayın.</p></div><div class="text-right shrink-0"><span class="text-label-sm font-label-sm text-on-surface-variant block">Hesabınız var mı?</span><a class="text-label-lg font-label-lg font-semibold text-secondary hover:underline inline-flex items-center gap-1" href="#"><span class="">Giriş Yap</span><span class="material-symbols-outlined text-[16px]" data-icon="arrow_forward">arrow_forward</span></a></div></div><div class="mb-space-lg"><label class="block text-label-md font-label-md text-on-surface font-semibold mb-2">Hesap Türü</label><div aria-label="Hesap Türü" class="grid grid-cols-1 sm:grid-cols-2 gap-3" role="radiogroup"><label class="cursor-pointer border-2 border-secondary bg-secondary-fixed/20 p-space-md rounded-xl flex items-center gap-3 transition-all"><input checked="" class="text-secondary focus:ring-secondary border-outline-variant" name="account_type" type="radio" value="corporate"><span class="text-label-lg font-label-lg font-bold text-on-surface">Kurumsal</span></label><label class="cursor-pointer border border-outline-variant/50 hover:border-outline bg-surface-container-lowest p-space-md rounded-xl flex items-center gap-3 transition-all"><input class="text-secondary focus:ring-secondary border-outline-variant" name="account_type" type="radio" value="individual"><span class="text-label-lg font-label-lg font-bold text-on-surface">Bireysel</span></label></div></div>
+    
+    <form asp-controller="Auth" asp-action="Register" class="space-y-space-md" method="post" ><div class="grid grid-cols-1 sm:grid-cols-2 gap-space-md"><div><label class="block text-label-md font-label-md text-on-surface font-medium mb-1" for="company_name">Ad Soyad / Şirket Unvanı <span class="text-error">*</span></label><div class="relative"><span class="material-symbols-outlined absolute left-3 top-3 text-outline text-[20px]" data-icon="badge">badge</span>
+
+                            <input class="w-full pl-10 pr-3 py-2.5 bg-surface-container-lowest border border-outline-variant/60 rounded-lg text-body-md text-on-surface placeholder:text-outline focus:outline-none focus:border-secondary focus:ring-2 focus:ring-secondary-fixed transition-all" id="company_name" asp-for="FullName"  placeholder ="Adınız veya unvanınız" required="" type="text">
+                        </div>
+                    </div><div><label class="block text-label-md font-label-md text-on-surface font-medium mb-1" for="email">E-posta Adresi <span class="text-error">*</span></label><div class="relative"><span class="material-symbols-outlined absolute left-3 top-3 text-outline text-[20px]" data-icon="mail">mail</span>
+                            <input class="w-full pl-10 pr-3 py-2.5 bg-surface-container-lowest border border-outline-variant/60 rounded-lg text-body-md text-on-surface placeholder:text-outline focus:outline-none focus:border-secondary focus:ring-2 focus:ring-secondary-fixed transition-all" id="email" asp-for="Email" placeholder="ornek@alanadi.com" required="" type="email">
+                        </div>
+                    </div>
+                </div><div><label class="block text-label-md font-label-md text-on-surface font-medium mb-1" for="phone">Telefon Numarası <span class="text-error">*</span></label><div class="relative flex"><span class="inline-flex items-center px-3 rounded-l-lg border border-r-0 border-outline-variant/60 bg-surface-container-low text-label-md font-semibold text-on-surface">+90</span>
+                        <input class="w-full pl-3 pr-3 py-2.5 bg-surface-container-lowest border border-outline-variant/60 rounded-r-lg text-body-md text-on-surface placeholder:text-outline focus:outline-none focus:border-secondary focus:ring-2 focus:ring-secondary-fixed transition-all" id="phone" asp-for="PhoneNumber" placeholder="5XX XXX XX XX" required="" type="tel">
+                    </div>
+                </div><div class="grid grid-cols-1 sm:grid-cols-2 gap-space-md"><div><label class="block text-label-md font-label-md text-on-surface font-medium mb-1" for="password">Parola <span class="text-error">*</span></label><div class="relative"><span class="material-symbols-outlined absolute left-3 top-3 text-outline text-[20px]" data-icon="lock">lock</span>
+                            <input class="w-full pl-10 pr-10 py-2.5 bg-surface-container-lowest border border-outline-variant/60 rounded-lg text-body-md text-on-surface placeholder:text-outline focus:outline-none focus:border-secondary focus:ring-2 focus:ring-secondary-fixed transition-all" id="password" asp-for="Password" placeholder="••••••••" required="" type="password"><button class="absolute right-3 top-3 text-outline hover:text-on-surface" type="button"><span class="material-symbols-outlined text-[18px]" data-icon="visibility">visibility</span></button>
+                        </div>
+                    </div><div><label class="block text-label-md font-label-md text-on-surface font-medium mb-1" for="password_confirmation">Parola Tekrarı <span class="text-error">*</span></label><div class="relative"><span class="material-symbols-outlined absolute left-3 top-3 text-outline text-[20px]" data-icon="lock_reset">lock_reset</span>
+                            <input class="w-full pl-10 pr-3 py-2.5 bg-surface-container-lowest border border-outline-variant/60 rounded-lg text-body-md text-on-surface placeholder:text-outline focus:outline-none focus:border-secondary focus:ring-2 focus:ring-secondary-fixed transition-all" id="password_confirmation" asp-for="ConfirmPassword" placeholder="••••••••" required="" type="password">
+                        </div>
+                    </div>
+                </div><div class="space-y-3 pt-1"><label class="flex items-start gap-3 cursor-pointer group"><input class="mt-1 w-4 h-4 rounded text-secondary border-outline-variant focus:ring-secondary" name="terms_consent" required="" type="checkbox"><span class="text-body-sm text-on-surface-variant group-hover:text-on-surface transition-colors leading-relaxed"><a class="text-secondary font-semibold hover:underline" href="#">Kullanım Koşulları</a> ve <a class="text-secondary font-semibold hover:underline" href="#">KVKK Aydınlatma Metnini</a> okudum, onaylıyorum.</span></label><label class="flex items-start gap-3 cursor-pointer group"><input class="mt-1 w-4 h-4 rounded text-secondary border-outline-variant focus:ring-secondary" name="commercial_consent" type="checkbox"><span class="text-body-sm text-on-surface-variant group-hover:text-on-surface transition-colors leading-relaxed">Ticari elektronik ileti ve bilgilendirme almayı kabul ediyorum.</span></label></div><div class="pt-2">
+                    <button type="submit" class="w-full h-12 bg-secondary hover:bg-on-secondary-container active:scale-[0.99] text-on-secondary font-headline-sm text-headline-sm rounded-lg shadow-sm hover:shadow transition-all flex items-center justify-center gap-2"><span class="">Hesap Oluştur</span><span class="material-symbols-outlined text-[20px]" data-icon="arrow_forward">arrow_forward</span></button></div>
+            </form><div class="mt-space-lg pt-space-md border-t border-outline-variant/30 flex items-center justify-center gap-2 text-label-sm text-on-surface-variant"><span class="material-symbols-outlined text-outline text-[18px]" data-icon="verified_user">verified_user</span><span class="">256-bit SSL şifreleme ile verileriniz güvende</span></div>
+        </div>
+    </main>
+    <!-- Standard Footer Anchor Component -->
+    <footer class="w-full bg-surface-container-lowest border-t border-outline-variant/40 py-space-md px-space-lg md:px-margin">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4 text-center md:text-left">
+            <div class="flex flex-col sm:flex-row items-center gap-2">
+                <span class="text-headline-sm font-headline-sm font-bold text-on-surface">KargoHQ</span>
+                <span class="hidden sm:inline text-outline">•</span>
+                <p class="text-body-sm text-on-surface-variant font-body-sm">
+                    © 2025 KargoHQ Lojistik Teknolojileri A.Ş. Tüm hakları saklıdır. ISO/IEC 27001 &amp; SOC-2 Sertifikalı Altyapı.
+                </p>
+            </div>
+            <nav class="flex flex-wrap justify-center gap-x-5 gap-y-2 text-body-sm font-body-sm text-on-surface-variant">
+                <a class="hover:text-on-surface transition-colors duration-150" href="#">Kullanım Koşulları</a>
+                <a class="hover:text-on-surface transition-colors duration-150" href="#">Gizlilik ve KVKK Politikası</a>
+                <a class="hover:text-on-surface transition-colors duration-150" href="#">Güvenlik Bildirimi</a>
+                <a class="hover:text-on-surface transition-colors duration-150" href="#">Sistem Durumu</a>
+                <a class="hover:text-on-surface transition-colors duration-150" href="#">Çerez Tercihleri</a>
+            </nav>
+        </div>
+    </footer>
+
+
+</body>
+</html>

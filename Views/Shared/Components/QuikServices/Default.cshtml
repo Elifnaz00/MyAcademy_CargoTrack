@@ -1,0 +1,41 @@
+﻿@using DtoLayer.DTOs.QuikServiceDtos
+
+
+@model List<ResultQuikServiceDto>
+
+<section class="w-full px-margin py-space-xl max-w-7xl mx-auto">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-gutter">
+        @foreach (var item in Model)
+        {
+            <div class="group bg-surface-container-lowest p-space-lg rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 flex flex-col gap-space-md">
+
+                <div class="w-14 h-14 rounded-xl bg-surface-container flex items-center justify-center text-primary group-hover:bg-secondary-container group-hover:text-on-secondary transition-colors">
+                    <div class="w-14 h-14 rounded-xl bg-surface-container flex items-center justify-center text-primary group-hover:bg-secondary-container group-hover:text-on-secondary transition-colors">
+                        <span class="material-symbols-outlined text-3xl">
+                            @item.IconUrl
+                        </span>
+                    </div>
+                </div>
+
+                <div class="flex flex-col gap-1">
+                    <h3 class="font-headline-sm text-headline-sm font-semibold text-on-surface group-hover:text-secondary-container transition-colors">
+                        @item.Title
+                    </h3>
+
+                    <p class="font-body-md text-body-md text-on-surface-variant">
+                        @item.Description
+                    </p>
+                </div>
+
+                <div class="mt-auto flex items-center gap-1 font-label-md text-label-md text-secondary-container font-semibold">
+                    <span>Hemen İncele</span>
+                    <span class="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform">
+                        arrow_forward
+                    </span>
+                </div>
+
+            </div>
+        }
+    </div>
+   
+</section>

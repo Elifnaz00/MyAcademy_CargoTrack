@@ -1,0 +1,81 @@
+﻿
+@model List<DtoLayer.DTOs.DeliveryDtos.UserDeliveryCodeDto>
+
+@{
+    ViewData["Title"] = "Teslimat Kodlarım";
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
+}
+<main class="md:ml-64 pt-20 pb-16 px-4 md:px-space-xl max-w-[1600px] mx-auto space-y-6">
+    <section class="bg-surface-container-lowest rounded-2xl border border-surface-container elevation-1 overflow-hidden">
+        <div class="min-h-screen bg-[#f8f9ff] p-8">
+
+    <div class="mb-8">
+        <h1 class="text-2xl font-bold text-gray-800">
+            Teslimat Kodlarım
+        </h1>
+        <p class="text-gray-500 mt-2">
+            Dağıtıma çıkan kargolarınızın teslimat kodlarını buradan görüntüleyebilirsiniz.
+        </p>
+    </div>
+
+    @if (Model == null || !Model.Any())
+    {
+        <div class="bg-white rounded-2xl border border-gray-100 p-10 text-center">
+            <div class="text-4xl mb-4">📦</div>
+            <h2 class="text-lg font-semibold text-gray-700">
+                Aktif teslimat kodunuz bulunmuyor.
+            </h2>
+            <p class="text-sm text-gray-500 mt-2">
+                Kargonuz dağıtıma çıktığında teslimat kodunuz burada görünecektir.
+            </p>
+        </div>
+    }
+    else
+    {
+        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+
+            @foreach (var item in Model)
+            {
+                <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
+
+                    <div class="flex items-center justify-between mb-5">
+                        <span class="text-sm font-semibold text-gray-500">
+                            Kargo Takip No
+                        </span>
+
+                        <span class="rounded-full bg-green-100 text-green-700 px-3 py-1 text-xs font-semibold">
+                            Dağıtımda
+                        </span>
+                    </div>
+
+                    <h2 class="text-lg font-bold text-gray-800 mb-6">
+                        @item.TrackCode
+                    </h2>
+
+                    <div class="rounded-xl bg-indigo-50 border border-indigo-100 p-5 text-center">
+
+                        <p class="text-sm text-indigo-700 font-medium mb-3">
+                            Teslimat Doğrulama Kodunuz
+                        </p>
+
+                        <div class="text-3xl font-bold tracking-[0.4em] text-indigo-700">
+                            @item.DeliveryCode
+                        </div>
+
+                    </div>
+
+                    <p class="text-xs text-gray-500 mt-4 leading-relaxed">
+                        Kargonuzu teslim alırken bu kodu kuryeye söylemeniz gerekmektedir.
+                        Kodunuzu teslimat gerçekleşene kadar kimseyle paylaşmayınız.
+                    </p>
+
+                </div>
+            }
+
+        </div>
+    }
+
+</div>
+    </section>
+</main>
+

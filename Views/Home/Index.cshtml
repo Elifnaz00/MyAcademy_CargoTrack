@@ -1,0 +1,155 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_TrackingLayout.cshtml";
+}
+
+
+<main class="flex-grow max-w-container-max-width mx-auto w-full px-margin-mobile md:px-gutter py-section-padding">
+
+    @await Component.InvokeAsync("BannerAbout")
+
+    <!-- Quick Action Cards (Hızlı İşlemler) -->
+    @await Component.InvokeAsync("QuikServices")
+   
+    <!-- Interactive Price & Duration Simulator (Fiyat & Süre Simülatörü) -->
+    <section class="w-full px-margin py-space-xl max-w-7xl mx-auto" id="simulator">
+        <div class="bg-surface-container-lowest rounded-3xl shadow-xl overflow-hidden grid grid-cols-1 lg:grid-cols-12">
+            <!-- Calculator Form -->
+            <div class="lg:col-span-7 p-space-lg sm:p-space-xl flex flex-col gap-space-md">
+                <div>
+                    <span class="font-label-sm text-label-sm uppercase tracking-wider text-secondary-container font-bold">Şeffaf Tarife</span>
+                    <h2 class="font-headline-lg text-headline-lg text-on-surface font-bold">Fiyat ve Süre Simülatörü</h2>
+                    <p class="font-body-md text-body-md text-on-surface-variant mt-1">İl ve desi bilgilerini seçin, yaklaşık gönderi maliyetini ve teslim süresini hesaplayın.</p>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-space-md pt-space-xs">
+                    <div class="flex flex-col gap-1">
+                        <label class="font-label-md text-label-md text-on-surface font-semibold" for="originCity">Çıkış İli</label>
+                        <select class="h-12 px-space-md bg-surface-container-low rounded-xl font-body-md text-body-md text-on-surface focus:outline-none" id="originCity">
+                            <option value="istanbul">İstanbul</option>
+                            <option value="ankara">Ankara</option>
+                            <option value="izmir">İzmir</option>
+                            <option value="bursa">Bursa</option>
+                            <option value="antalya">Antalya</option>
+                        </select>
+                    </div>
+                    <div class="flex flex-col gap-1">
+                        <label class="font-label-md text-label-md text-on-surface font-semibold" for="destCity">Varış İli</label>
+                        <select class="h-12 px-space-md bg-surface-container-low rounded-xl font-body-md text-body-md text-on-surface focus:outline-none" id="destCity">
+                            <option value="izmir">İzmir</option>
+                            <option value="istanbul">İstanbul</option>
+                            <option value="ankara">Ankara</option>
+                            <option value="antalya">Antalya</option>
+                            <option value="trabzon">Trabzon</option>
+                        </select>
+                    </div>
+                </div>
+                <!-- Weight / Desi Slider -->
+                <div class="flex flex-col gap-2 pt-2">
+                    <div class="flex items-center justify-between">
+                        <label class="font-label-md text-label-md text-on-surface font-semibold" for="weightRange">Paket Ağırlığı / Hacim</label>
+                        <span class="font-label-lg text-label-lg font-bold text-secondary-container" id="weightDisplay">2 Desi / Kg</span>
+                    </div>
+                    <input class="w-full h-2 bg-surface-container rounded-lg appearance-none cursor-pointer accent-secondary-container" id="weightRange" max="30" min="1" oninput="updateCalculation(this.value)" type="range" value="2" />
+                    <div class="flex justify-between font-label-sm text-label-sm text-on-surface-variant">
+                        <span>Dosya / 1 Desi</span>
+                        <span>15 Desi</span>
+                        <span>30 Desi (Maks Standart)</span>
+                    </div>
+                </div>
+                <!-- Delivery Type Selection -->
+                <div class="grid grid-cols-2 gap-space-sm pt-2">
+                    <label class="cursor-pointer p-space-md rounded-xl bg-surface-container-low flex flex-col gap-1 has-[:checked]:bg-primary has-[:checked]:text-on-primary transition-all">
+                        <div class="flex items-center justify-between">
+                            <span class="font-headline-sm text-headline-sm font-semibold">Standart</span>
+                            <input checked="" class="accent-secondary-container" name="speedType" onchange="recalcTotal()" type="radio" value="standard" />
+                        </div>
+                        <span class="font-body-sm text-body-sm opacity-80">1-2 İş Günü Teslimat</span>
+                    </label>
+                    <label class="cursor-pointer p-space-md rounded-xl bg-surface-container-low flex flex-col gap-1 has-[:checked]:bg-primary has-[:checked]:text-on-primary transition-all">
+                        <div class="flex items-center justify-between">
+                            <span class="font-headline-sm text-headline-sm font-semibold">VIP Ekspres</span>
+                            <input class="accent-secondary-container" name="speedType" onchange="recalcTotal()" type="radio" value="express" />
+                        </div>
+                        <span class="font-body-sm text-body-sm opacity-80">Ertesi Gün 10:00 Teslim</span>
+                    </label>
+                </div>
+            </div>
+            <!-- Result Panel -->
+            <div class="lg:col-span-5 bg-surface-container p-space-lg sm:p-space-xl flex flex-col justify-between gap-space-md">
+                <div class="flex flex-col gap-space-sm">
+                    <span class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant font-bold">Hesaplanan Rota Özeti</span>
+                    <div class="flex items-center justify-between py-space-xs border-b border-outline-variant/30">
+                        <span class="font-body-md text-body-md text-on-surface-variant">Tahmini Süre</span>
+                        <span class="font-headline-sm text-headline-sm font-bold text-on-surface" id="estDuration">Ertesi Gün Teslim</span>
+                    </div>
+                    <div class="flex items-center justify-between py-space-xs border-b border-outline-variant/30">
+                        <span class="font-body-md text-body-md text-on-surface-variant">Sigorta Kapsamı</span>
+                        <span class="font-body-md text-body-md font-semibold text-tertiary-fixed-variant flex items-center gap-1">
+                            <span class="material-symbols-outlined text-base">verified_user</span> Dahil
+                        </span>
+                    </div>
+                    <div class="flex items-center justify-between py-space-xs border-b border-outline-variant/30">
+                        <span class="font-body-md text-body-md text-on-surface-variant">Kuryeden Alım</span>
+                        <span class="font-body-md text-body-md text-on-surface font-semibold">Ücretsiz</span>
+                    </div>
+                </div>
+                <div class="bg-surface-container-lowest p-space-md rounded-2xl shadow-sm flex flex-col gap-space-xs">
+                    <span class="font-label-sm text-label-sm text-on-surface-variant">Tahmini Gönderi Tutarı (KDV Dahil)</span>
+                    <div class="flex items-baseline gap-1">
+                        <span class="font-display text-display text-secondary-container font-extrabold" id="priceDisplay">₺94.50</span>
+                        <span class="font-body-sm text-body-sm text-on-surface-variant">/ gönderi</span>
+                    </div>
+                    <button class="mt-space-xs w-full h-11 bg-primary text-on-primary rounded-xl font-label-lg text-label-lg font-semibold hover:bg-on-surface transition-all flex items-center justify-center gap-2">
+                        <span>Hemen Gönderi Oluştur</span>
+                        <span class="material-symbols-outlined text-base">arrow_forward</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Why KargoHQ? (Neden KargoHQ?) -->
+    <section class="w-full px-margin py-space-2xl max-w-7xl mx-auto">
+        <div class="flex flex-col items-center text-center gap-space-xs max-w-2xl mx-auto mb-space-xl">
+            <span class="font-label-sm text-label-sm uppercase tracking-wider text-secondary-container font-bold">Kurumsal Üstünlük</span>
+            <h2 class="font-headline-lg text-headline-lg text-on-surface font-bold">Neden KargoHQ Güvencesi?</h2>
+            <p class="font-body-md text-body-md text-on-surface-variant">Bireysel ve kurumsal operasyonlarda hata payını sıfıra indiren yeni nesil lojistik standartları.</p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-gutter">
+            <!-- Feature 1 -->
+            <div class="bg-surface-container-lowest p-space-lg rounded-2xl shadow-sm flex flex-col gap-space-sm">
+                <div class="w-12 h-12 rounded-xl bg-tertiary-fixed text-tertiary-container flex items-center justify-center">
+                    <span class="material-symbols-outlined text-2xl">timer</span>
+                </div>
+                <h3 class="font-headline-sm text-headline-sm font-bold text-on-surface">%99.4 Zamanında Teslim</h3>
+                <p class="font-body-md text-body-md text-on-surface-variant">Akıllı trafik algoritmaları ve otomatik rota optimizasyonuyla taahhüt edilen saatte teslimat.</p>
+            </div>
+            <!-- Feature 2 -->
+            <div class="bg-surface-container-lowest p-space-lg rounded-2xl shadow-sm flex flex-col gap-space-sm">
+                <div class="w-12 h-12 rounded-xl bg-secondary-fixed text-on-secondary-container flex items-center justify-center">
+                    <span class="material-symbols-outlined text-2xl">thermostat</span>
+                </div>
+                <h3 class="font-headline-sm text-headline-sm font-bold text-on-surface">Canlı Isı &amp; Darbe Takibi</h3>
+                <p class="font-body-md text-body-md text-on-surface-variant">Hassas ve soğuk zincir gönderilerde IoT sensörler ile kargo kabin içi değerlerini gerçek zamanlı izleyin.</p>
+            </div>
+            <!-- Feature 3 -->
+            <div class="bg-surface-container-lowest p-space-lg rounded-2xl shadow-sm flex flex-col gap-space-sm">
+                <div class="w-12 h-12 rounded-xl bg-primary-fixed text-on-primary-fixed flex items-center justify-center">
+                    <span class="material-symbols-outlined text-2xl">security</span>
+                </div>
+                <h3 class="font-headline-sm text-headline-sm font-bold text-on-surface">Kapsamlı Taşıma Sigortası</h3>
+                <p class="font-body-md text-body-md text-on-surface-variant">Her paket, teslim alındığı andan teslim edilene kadar tam değer garantili sigorta himayesindedir.</p>
+            </div>
+            <!-- Feature 4 -->
+            <div class="bg-surface-container-lowest p-space-lg rounded-2xl shadow-sm flex flex-col gap-space-sm">
+                <div class="w-12 h-12 rounded-xl bg-surface-container text-on-surface flex items-center justify-center">
+                    <span class="material-symbols-outlined text-2xl">support_agent</span>
+                </div>
+                <h3 class="font-headline-sm text-headline-sm font-bold text-on-surface">7/24 Canlı Destek</h3>
+                <p class="font-body-md text-body-md text-on-surface-variant">Otomatik botlar değil, alanında uzman lojistik operatörleriyle 10 saniye içinde iletişime geçin.</p>
+            </div>
+        </div>
+    </section>
+ 
+</main>
+     

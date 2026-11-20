@@ -1,0 +1,251 @@
+﻿<!DOCTYPE html>
+
+<html lang="tr">
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>KargoHQ Operasyon - Yönetici Paneli</title>
+    <!-- Material Symbols Outlined -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet" />
+    <!-- Google Fonts: Inter & Plus Jakarta Sans -->
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Plus+Jakarta+Sans:wght@600;700;800&amp;display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet" />
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
+    <!-- Tailwind CSS v3 with Plugins -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <!-- Tailwind Configuration verbatim from Design System -->
+    <script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                "on-secondary-container": "#571a00",
+                "primary-fixed-dim": "#bec6e0",
+                "on-primary": "#ffffff",
+                "on-surface": "#0b1c30",
+                "on-secondary-fixed-variant": "#7f2b00",
+                "inverse-surface": "#213145",
+                "error-container": "#ffdad6",
+                "secondary-container": "#fd651e",
+                "surface-dim": "#cbdbf5",
+                "on-tertiary-fixed": "#002113",
+                "outline-variant": "#c6c6cd",
+                "surface-container-high": "#dce9ff",
+                "surface-variant": "#d3e4fe",
+                "surface-container": "#e5eeff",
+                "secondary": "#a73a00",
+                "primary-fixed": "#dae2fd",
+                "on-secondary": "#ffffff",
+                "tertiary-fixed-dim": "#4edea3",
+                "on-primary-fixed": "#131b2e",
+                "surface-container-highest": "#d3e4fe",
+                "primary-container": "#131b2e",
+                "secondary-fixed-dim": "#ffb599",
+                "tertiary": "#000000",
+                "on-secondary-fixed": "#370e00",
+                "surface-bright": "#f8f9ff",
+                "on-tertiary": "#ffffff",
+                "on-surface-variant": "#45464d",
+                "error": "#ba1a1a",
+                "on-background": "#0b1c30",
+                "secondary-fixed": "#ffdbce",
+                "on-tertiary-container": "#009668",
+                "on-error": "#ffffff",
+                "on-tertiary-fixed-variant": "#005236",
+                "tertiary-fixed": "#6ffbbe",
+                "surface-tint": "#565e74",
+                "primary": "#000000",
+                "surface-container-lowest": "#ffffff",
+                "inverse-primary": "#bec6e0",
+                "background": "#f8f9ff",
+                "outline": "#76777d",
+                "on-primary-container": "#7c839b",
+                "on-error-container": "#93000a",
+                "surface-container-low": "#eff4ff",
+                "surface": "#f8f9ff",
+                "tertiary-container": "#002113",
+                "on-primary-fixed-variant": "#3f465c",
+                "inverse-on-surface": "#eaf1ff"
+              },
+              "borderRadius": {
+                "DEFAULT": "0.25rem",
+                "lg": "0.5rem",
+                "xl": "0.75rem",
+                "full": "9999px"
+              },
+              "spacing": {
+                "space-lg": "1.5rem",
+                "margin-mobile": "1rem",
+                "space-2xl": "3rem",
+                "space-xs": "0.25rem",
+                "space-sm": "0.5rem",
+                "gutter": "1.5rem",
+                "space-md": "1rem",
+                "space-xl": "2rem",
+                "margin": "2rem",
+                "gutter-sm": "1rem"
+              },
+              "fontFamily": {
+                "body-md": ["Inter"],
+                "headline-sm": ["Plus Jakarta Sans"],
+                "metric-number": ["Plus Jakarta Sans"],
+                "headline-lg": ["Plus Jakarta Sans"],
+                "label-lg": ["Inter"],
+                "headline-md": ["Plus Jakarta Sans"],
+                "body-sm": ["Inter"],
+                "body-lg": ["Inter"],
+                "code-tracking": ["Inter"],
+                "label-md": ["Inter"],
+                "display-mobile": ["Plus Jakarta Sans"],
+                "label-sm": ["Inter"],
+                "display": ["Plus Jakarta Sans"],
+                "headline-lg-mobile": ["Plus Jakarta Sans"]
+              },
+              "fontSize": {
+                "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                "headline-sm": ["16px", { "lineHeight": "24px", "fontWeight": "600" }],
+                "metric-number": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                "headline-lg": ["28px", { "lineHeight": "36px", "letterSpacing": "-0.015em", "fontWeight": "600" }],
+                "label-lg": ["14px", { "lineHeight": "20px", "fontWeight": "500" }],
+                "headline-md": ["20px", { "lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                "body-sm": ["12px", { "lineHeight": "16px", "fontWeight": "400" }],
+                "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                "code-tracking": ["13px", { "lineHeight": "18px", "letterSpacing": "0.04em", "fontWeight": "600" }],
+                "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.01em", "fontWeight": "600" }],
+                "display-mobile": ["28px", { "lineHeight": "36px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                "label-sm": ["11px", { "lineHeight": "14px", "letterSpacing": "0.02em", "fontWeight": "600" }],
+                "display": ["36px", { "lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                "headline-lg-mobile": ["22px", { "lineHeight": "30px", "letterSpacing": "-0.01em", "fontWeight": "600" }]
+              }
+            }
+          }
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            vertical-align: middle;
+            line-height: 1;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface antialiased font-body-md min-h-screen">
+    <!-- ========================================================================= -->
+    <!-- SHARED COMPONENT: SideNavBar                                             -->
+    <!-- ========================================================================= -->
+    <aside class="fixed top-0 left-0 h-screen w-64 z-40 flex flex-col p-4 bg-surface-container-lowest dark:bg-inverse-surface border-r border-outline-variant/30 dark:border-outline/20 shadow-sm dark:shadow-none justify-between transition-all duration-200">
+        <div class="flex flex-col gap-6">
+            <!-- Brand Header -->
+            <div class="flex items-center gap-3 px-2 pt-1">
+                <div class="w-10 h-10 rounded-xl bg-secondary flex items-center justify-center text-on-secondary shadow-sm">
+                    <span class="material-symbols-outlined text-[24px]">local_shipping</span>
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-headline-md font-headline-md font-bold text-on-surface dark:text-inverse-on-surface tracking-tight">KargoHQ Operasyon</span>
+                    <span class="text-label-sm font-label-sm text-on-surface-variant flex items-center gap-1.5">
+                        <span class="w-2 h-2 rounded-full bg-tertiary-fixed-dim"></span>
+                        Lojistik OS • v4.8
+                    </span>
+                </div>
+            </div>
+            <!-- Action Button CTA -->
+            <a asp-area="Manager" asp-controller="Cargo" asp-action="Create" class="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-lg bg-secondary text-on-secondary hover:bg-on-secondary-container transition-all duration-200 active:scale-[0.99] shadow-sm font-label-lg text-label-lg">
+                <span class="material-symbols-outlined text-[20px]">add_circle</span>
+                <span>Yeni Kargo Oluştur</span>
+            </a>
+            <!-- Navigation Tabs (Exact Strings and Icons from JSON) -->
+            <nav class="flex flex-col gap-1">
+                <a asp-area="Manager" asp-controller="Dashboard" asp-action="Index" class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-surface-container-low dark:bg-surface-container-high text-secondary dark:text-secondary-fixed font-semibold border-l-4 border-secondary dark:border-secondary-fixed transition-colors duration-150">
+                    <span class="material-symbols-outlined text-[20px]">dashboard</span>
+                    <span class="text-label-md font-label-md">Kontrol Paneli</span>
+                </a>
+                <a asp-area="Manager" asp-controller="Cargo" asp-action="Incoming" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant dark:text-inverse-primary hover:text-on-surface dark:hover:text-inverse-on-surface hover:bg-surface-container-low dark:hover:bg-surface-container transition-colors duration-150 active:scale-[0.99]">
+                    <span class="material-symbols-outlined text-[20px]">local_shipping</span>
+                    <span class="text-label-md font-label-md"> Şubeye Gelen Kargolar</span>
+                </a>
+                <a asp-area="Manager" asp-controller="Cargo" asp-action="Outgoing" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant dark:text-inverse-primary hover:text-on-surface dark:hover:text-inverse-on-surface hover:bg-surface-container-low dark:hover:bg-surface-container transition-colors duration-150 active:scale-[0.99]">
+                    <span class="material-symbols-outlined text-[20px]">local_shipping</span>
+                    <span class="text-label-md font-label-md"> Şubeden Çıkan Kargolar</span>
+                </a>
+                <a asp-area="Manager" asp-controller="Cargo" asp-action="Create" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant dark:text-inverse-primary hover:text-on-surface dark:hover:text-inverse-on-surface hover:bg-surface-container-low dark:hover:bg-surface-container transition-colors duration-150 active:scale-[0.99]">
+                    <span class="material-symbols-outlined text-[20px]">add_box</span>
+                    <span class="text-label-md font-label-md">Yeni Kargo Oluştur</span>
+                </a>
+                <a href="/Manager/Cargo/Delayed" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant dark:text-inverse-primary hover:text-on-surface dark:hover:text-inverse-on-surface hover:bg-surface-container-low dark:hover:bg-surface-container transition-colors duration-150 active:scale-[0.99]">
+                    <span class="material-symbols-outlined text-[20px]">add_box</span>
+                    <span class="text-label-md font-label-md"> Geciken Kargolar</span>
+                </a>
+                <a href="/Manager/DeliveryException/Index" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant dark:text-inverse-primary hover:text-on-surface dark:hover:text-inverse-on-surface hover:bg-surface-container-low dark:hover:bg-surface-container transition-colors duration-150 active:scale-[0.99]">
+                    <span class="material-symbols-outlined text-[20px]">add_box</span>
+                    <span class="text-label-md font-label-md">Çözülmemiş Sorunlar</span>
+                </a>
+               
+               
+             
+            </nav>
+        </div>
+        <!-- Footer Tabs (Ayarlar, Çıkış Yap) -->
+        <div class="flex flex-col gap-1 pt-4 border-t border-outline-variant/30">
+            <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant dark:text-inverse-primary hover:text-on-surface dark:hover:text-inverse-on-surface hover:bg-surface-container-low transition-colors duration-150 active:scale-[0.99]" href="#ayarlar">
+                <span class="material-symbols-outlined text-[20px]">settings</span>
+                <span class="text-label-md font-label-md">Ayarlar</span>
+            </a>
+            <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-error hover:bg-error-container/40 transition-colors duration-150 active:scale-[0.99]" href="#cikis">
+                <span class="material-symbols-outlined text-[20px]">logout</span>
+                <span class="text-label-md font-label-md font-medium">Çıkış Yap</span>
+            </a>
+        </div>
+    </aside>
+    <!-- ========================================================================= -->
+    <!-- SHARED COMPONENT: TopNavBar                                              -->
+    <!-- ========================================================================= -->
+    <header class="fixed top-0 right-0 left-64 h-16 z-30 flex items-center justify-between px-6 bg-surface-container-lowest/90 dark:bg-inverse-surface/90 backdrop-blur-sm border-b border-outline-variant/30 dark:border-outline/20 shadow-sm dark:shadow-none">
+        <!-- Left: Global Quick Search Input -->
+        <div class="relative w-96">
+            <span class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-[18px] text-outline">search</span>
+            <input class="w-full h-10 pl-10 pr-4 text-body-sm font-body-sm bg-surface-container-low rounded-lg border border-outline-variant/50 focus:border-secondary focus:ring-1 focus:ring-secondary/20 placeholder-on-surface-variant/60 outline-none transition-all" placeholder="Barkod veya kargo takip kodu ara..." type="text" />
+            <div class="absolute right-2.5 top-1/2 -translate-y-1/2 flex items-center gap-1 text-[11px] font-label-sm text-outline border border-outline-variant/60 rounded px-1.5 py-0.5 bg-surface-container-lowest">
+                ⌘K
+            </div>
+        </div>
+        <!-- Right Trailing Actions & Profile -->
+        <div class="flex items-center gap-4">
+            <!-- Live Sync Status -->
+            <div class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-surface-container-low border border-outline-variant/40">
+                <span class="relative flex h-2.5 w-2.5">
+                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-tertiary-fixed-dim opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-on-tertiary-container"></span>
+                </span>
+                <span class="text-label-sm font-label-sm text-on-tertiary-container">Canlı Senkron</span>
+                <button class="text-on-surface-variant hover:text-on-surface transition-colors" title="Manuel Senkronize Et">
+                    <span class="material-symbols-outlined text-[16px]">sync</span>
+                </button>
+            </div>
+            <!-- Notifications -->
+            <button class="relative p-2 rounded-lg text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-all active:scale-95">
+                <span class="material-symbols-outlined text-[22px]">notifications</span>
+                <span class="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-secondary-container"></span>
+            </button>
+            <div class="h-6 w-px bg-outline-variant/40"></div>
+            <!-- Manager Profile -->
+            <div class="flex items-center gap-3 pl-1">
+                <div class="w-9 h-9 rounded-full bg-primary-container text-white flex items-center justify-center font-semibold ring-2 ring-surface-container-high">M</div>
+                <div class="flex flex-col text-left">
+                    <span class="text-label-md font-label-md font-semibold text-on-surface leading-tight">Operasyon Yöneticisi</span>
+                    <span class="text-body-sm font-body-sm text-on-surface-variant leading-tight">Manager Paneli</span>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- ========================================================================= -->
+    <!-- MAIN CONTENT CANVAS (Dashboard)                                          -->
+    <!-- ========================================================================= -->
+    @RenderBody()
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

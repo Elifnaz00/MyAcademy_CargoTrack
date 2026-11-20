@@ -1,0 +1,11 @@
+.vs/
+bin/
+obj/
+**/bin/
+**/obj/
+
+*.csproj.user
+*.suo
+
+appsettings.Development.json
+MyAcademy_CargoTrack_old.sln

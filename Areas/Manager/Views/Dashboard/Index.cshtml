@@ -1,0 +1,114 @@
+﻿@{
+    ViewData["Title"] = "Operasyon Yönetimi";
+    Layout = "~/Views/Shared/_ManagerLayout.cshtml";
+}
+<main class="md:ml-64 pt-20 pb-16 px-4 md:px-space-xl max-w-[1600px] mx-auto space-y-6">
+    <section class="bg-surface-container-lowest rounded-2xl border border-surface-container elevation-1 overflow-hidden">
+
+        <div class="min-h-screen bg-slate-50 p-6 lg:p-8">
+
+            <!-- HEADER -->
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
+                <div>
+                    <p class="text-xs font-bold uppercase tracking-widest text-indigo-600 mb-2">
+                        CARGOTRACK / MANAGER
+                    </p>
+                    <h1 class="text-2xl font-bold text-slate-800">
+                        Operasyon Yönetimi
+                    </h1>
+                    <p class="text-sm text-slate-500 mt-2">
+                        Kargo süreçlerini, gecikmeleri ve operasyonel sorunları takip edin.
+                    </p>
+                </div>
+
+                <div class="flex items-center gap-2 text-sm text-slate-600 bg-white border border-slate-200 rounded-xl px-4 py-3">
+                    <i class="fa-regular fa-calendar text-indigo-500"></i>
+                    @DateTime.Now.ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("tr-TR"))
+                </div>
+            </div>
+
+            <!-- STATISTICS -->
+            @await Component.InvokeAsync("ManagerBranchStatistics")
+        
+
+            <!-- RECENT MOVEMENTS -->
+            <div class="bg-white border border-slate-200 rounded-2xl shadow-sm">
+
+                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 p-6 border-b border-slate-100">
+                    <div>
+                        <h2 class="font-bold text-slate-800">Son Kargo Hareketleri</h2>
+                        <p class="text-xs text-slate-500 mt-1">Sistemde gerçekleşen en son operasyon işlemleri</p>
+                    </div>
+                    <a href="/Manager/CargoMovement/Index"
+                       class="text-sm font-semibold text-indigo-600 hover:text-indigo-800">
+                        Tüm Hareketleri Gör <i class="fa-solid fa-arrow-right ml-1"></i>
+                    </a>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm text-left">
+                        <thead class="bg-slate-50 text-xs text-slate-500 uppercase">
+                            <tr>
+                                <th class="px-6 py-4">Takip Kodu</th>
+                                <th class="px-6 py-4">Önceki Durum</th>
+                                <th class="px-6 py-4">Yeni Durum</th>
+                                <th class="px-6 py-4">İşlemi Yapan</th>
+                                <th class="px-6 py-4">Lokasyon</th>
+                                <th class="px-6 py-4">İşlem Tarihi</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100">
+
+                            <tr class="hover:bg-slate-50 transition">
+                                <td class="px-6 py-4 font-bold text-indigo-600">CT-2026-00130</td>
+                                <td class="px-6 py-4 text-slate-500">AtOriginBranch</td>
+                                <td class="px-6 py-4">
+                                    <span class="bg-violet-50 text-violet-700 px-3 py-1.5 rounded-lg text-xs font-semibold">InTransferCenter</span>
+                                </td>
+                                <td class="px-6 py-4 text-slate-600">Mehmet Yılmaz</td>
+                                <td class="px-6 py-4 text-slate-600">İzmir Transfer Merkezi</td>
+                                <td class="px-6 py-4 text-slate-500">20.11.2026 15:32</td>
+                            </tr>
+
+                            <tr class="hover:bg-slate-50 transition">
+                                <td class="px-6 py-4 font-bold text-indigo-600">CT-2026-00129</td>
+                                <td class="px-6 py-4 text-slate-500">InTransferCenter</td>
+                                <td class="px-6 py-4">
+                                    <span class="bg-blue-50 text-blue-700 px-3 py-1.5 rounded-lg text-xs font-semibold">AtDestinationBranch</span>
+                                </td>
+                                <td class="px-6 py-4 text-slate-600">Ayşe Demir</td>
+                                <td class="px-6 py-4 text-slate-600">Ankara Şubesi</td>
+                                <td class="px-6 py-4 text-slate-500">20.11.2026 15:18</td>
+                            </tr>
+
+                            <tr class="hover:bg-slate-50 transition">
+                                <td class="px-6 py-4 font-bold text-indigo-600">CT-2026-00128</td>
+                                <td class="px-6 py-4 text-slate-500">Created</td>
+                                <td class="px-6 py-4">
+                                    <span class="bg-indigo-50 text-indigo-700 px-3 py-1.5 rounded-lg text-xs font-semibold">AtOriginBranch</span>
+                                </td>
+                                <td class="px-6 py-4 text-slate-600">Ali Kaya</td>
+                                <td class="px-6 py-4 text-slate-600">İstanbul Şubesi</td>
+                                <td class="px-6 py-4 text-slate-500">20.11.2026 14:56</td>
+                            </tr>
+
+                            <tr class="hover:bg-slate-50 transition">
+                                <td class="px-6 py-4 font-bold text-indigo-600">CT-2026-00127</td>
+                                <td class="px-6 py-4 text-slate-500">AtDestinationBranch</td>
+                                <td class="px-6 py-4">
+                                    <span class="bg-amber-50 text-amber-700 px-3 py-1.5 rounded-lg text-xs font-semibold">OutForDelivery</span>
+                                </td>
+                                <td class="px-6 py-4 text-slate-600">Zeynep Arslan</td>
+                                <td class="px-6 py-4 text-slate-600">Bursa Şubesi</td>
+                                <td class="px-6 py-4 text-slate-500">20.11.2026 14:42</td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+        </section>
+        </main>
+

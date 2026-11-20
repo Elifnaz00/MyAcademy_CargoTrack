@@ -1,0 +1,82 @@
+﻿@using DtoLayer.DTOs.CargoDtos
+@model UserCargoStatisticDto
+@{
+    Layout = null;
+}
+
+<section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+    <!-- Kart 1: Aktif Yoldaki Kargolar -->
+    <div class="bg-surface-container-lowest p-space-md rounded-2xl border border-surface-container elevation-1 hover:elevation-2 transition-all flex flex-col justify-between">
+        <div class="flex items-center justify-between">
+            <span class="text-label-md font-label-md text-on-surface-variant">Aktif Yoldaki Kargolar</span>
+            <div class="w-9 h-9 rounded-xl bg-secondary-fixed flex items-center justify-center text-secondary">
+                <span class="material-symbols-outlined text-[20px]" data-icon="local_shipping" style="font-variation-settings: 'FILL' 1;">local_shipping</span>
+            </div>
+        </div>
+        <div class="mt-3">
+            <div class="flex items-baseline gap-2">
+                <span class="text-metric-number font-metric-number text-on-surface">@Model.OutForDeliveryCount Adet</span>
+                <span class="inline-flex items-center text-label-sm font-label-sm text-secondary font-semibold">@Model.ExpectedDeliveryCountToday'i Bugün Dağıtımda</span>
+            </div>
+            <div class="mt-2 text-body-sm font-body-sm text-on-surface-variant flex items-center gap-1.5">
+                <span class="w-2 h-2 rounded-full bg-secondary-container pulse-glow"></span>
+                <span>Tahmini en yakın varış: 14:30</span>
+            </div>
+        </div>
+    </div>
+    <!-- Kart 2: Gelen Kargolarım -->
+    <div class="bg-surface-container-lowest p-space-md rounded-2xl border border-surface-container elevation-1 hover:elevation-2 transition-all flex flex-col justify-between">
+        <div class="flex items-center justify-between">
+            <span class="text-label-md font-label-md text-on-surface-variant">Gelen Kargolarım</span>
+            <div class="w-9 h-9 rounded-xl bg-surface-container flex items-center justify-center text-primary-container">
+                <span class="material-symbols-outlined text-[20px]" data-icon="move_to_inbox" style="font-variation-settings: 'FILL' 1;">move_to_inbox</span>
+            </div>
+        </div>
+        <div class="mt-3">
+            <div class="flex items-baseline gap-2">
+                <span class="text-metric-number font-metric-number text-on-surface">@Model.InComingCargoCount Paket</span>
+
+            </div>
+            <div class="mt-2 text-body-sm font-body-sm text-on-surface-variant">
+                Son güncelleme: 25 dk önce
+            </div>
+        </div>
+    </div>
+    <!-- Kart 3: Giden / Gönderdiğim Kargolar -->
+    <div class="bg-surface-container-lowest p-space-md rounded-2xl border border-surface-container elevation-1 hover:elevation-2 transition-all flex flex-col justify-between">
+        <div class="flex items-center justify-between">
+            <span class="text-label-md font-label-md text-on-surface-variant">Giden Kargolarım</span>
+            <div class="w-9 h-9 rounded-xl bg-surface-container-high flex items-center justify-center text-on-surface">
+                <span class="material-symbols-outlined text-[20px]" data-icon="outbox">outbox</span>
+            </div>
+        </div>
+        <div class="mt-3">
+            <div class="flex items-baseline gap-2">
+                <span class="text-metric-number font-metric-number text-on-surface">@Model.OutGoingCargoCount Paket</span>
+                <span class="text-label-sm font-label-sm text-on-surface-variant">@Model.OutGoingCargoDestination Teslim</span>
+            </div>
+            <div class="mt-2 text-body-sm font-body-sm text-on-tertiary-container flex items-center gap-1 font-medium">
+                <span class="material-symbols-outlined text-[14px]" data-icon="sync">sync</span>
+                <span>@Model.OutGoingCargoLastStatus</span>
+            </div>
+        </div>
+    </div>
+    <!-- Kart 4: Tamamlanan Teslimatlar -->
+    <div class="bg-surface-container-lowest p-space-md rounded-2xl border border-surface-container elevation-1 hover:elevation-2 transition-all flex flex-col justify-between">
+        <div class="flex items-center justify-between">
+            <span class="text-label-md font-label-md text-on-surface-variant">Tamamlanan Teslimatlar</span>
+            <div class="w-9 h-9 rounded-xl bg-tertiary-fixed flex items-center justify-center text-on-tertiary-fixed-variant">
+                <span class="material-symbols-outlined text-[20px]" data-icon="task_alt">task_alt</span>
+            </div>
+        </div>
+        <div class="mt-3">
+            <div class="flex items-baseline gap-2">
+                <span class="text-metric-number font-metric-number text-on-surface">@Model.CompletedCargoCount Kargo</span>
+
+            </div>
+            <div class="mt-2 text-body-sm font-body-sm text-on-surface-variant">
+                Ortalama teslim süresi: 18.4 Saat
+            </div>
+        </div>
+    </div>
+</section>

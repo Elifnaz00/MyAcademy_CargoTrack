@@ -1,0 +1,152 @@
+﻿@model DtoLayer.DTOs.TransferCenterDtos.TransferCenterUpdateDto
+
+@{
+    ViewData["Title"] = "Transfer Merkezi Düzenle";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+
+    var cities = ViewBag.Cities as IEnumerable<EntityLayer.Entities.City>;
+}
+
+<main class="ml-64 pt-20 px-8 pb-12">
+
+    <div class="mb-8">
+        <a asp-area="Admin"
+           asp-controller="TransferCenter"
+           asp-action="Index"
+           class="inline-flex items-center gap-2 text-sm text-on-surface-variant hover:text-primary mb-4">
+            <span class="material-symbols-rounded text-lg">arrow_back</span>
+            Transfer Merkezlerine Dön
+        </a>
+
+        <h1 class="text-headline-lg font-headline-lg text-on-surface">
+            Transfer Merkezi Düzenle
+        </h1>
+
+        <p class="text-body-md text-on-surface-variant mt-1">
+            Transfer merkezinin mevcut bilgilerini güncelleyin.
+        </p>
+    </div>
+
+    <section class="max-w-3xl p-6 rounded-xl bg-surface-container-lowest border border-outline-variant/30 shadow-sm">
+
+        <form asp-area="Admin"
+              asp-controller="TransferCenter"
+              asp-action="Edit"
+              method="post">
+
+            @Html.AntiForgeryToken()
+
+            <input type="hidden" asp-for="Id" />
+
+            <div asp-validation-summary="ModelOnly"
+                 class="mb-5 text-sm text-error"></div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+
+                <div>
+                    <label asp-for="Name"
+                           class="block text-sm font-medium text-on-surface mb-2">
+                        Transfer Merkezi Adı
+                    </label>
+
+                    <input asp-for="Name"
+                           placeholder="Örn. Ankara Transfer Merkezi"
+                           class="w-full px-4 py-3 rounded-lg border border-outline-variant bg-surface text-on-surface focus:outline-none focus:ring-2 focus:ring-primary" />
+
+                    <span asp-validation-for="Name"
+                          class="text-sm text-error"></span>
+                </div>
+
+                <div>
+                    <label asp-for="Code"
+                           class="block text-sm font-medium text-on-surface mb-2">
+                        Transfer Merkezi Kodu
+                    </label>
+
+                    <input asp-for="Code"
+                           placeholder="Örn. TR-ANK-001"
+                           class="w-full px-4 py-3 rounded-lg border border-outline-variant bg-surface text-on-surface focus:outline-none focus:ring-2 focus:ring-primary" />
+
+                    <span asp-validation-for="Code"
+                          class="text-sm text-error"></span>
+                </div>
+
+                <div class="md:col-span-2">
+                    <label asp-for="CityId"
+                           class="block text-sm font-medium text-on-surface mb-2">
+                        Şehir
+                    </label>
+
+                    <select asp-for="CityId"
+                            class="w-full px-4 py-3 rounded-lg border border-outline-variant bg-surface text-on-surface focus:outline-none focus:ring-2 focus:ring-primary">
+
+                        <option value="">Şehir seçiniz</option>
+
+                        @if (cities != null)
+                        {
+                            foreach (var city in cities)
+                            {
+                                <option value="@city.Id">@city.Name</option>
+                            }
+                        }
+
+                    </select>
+
+                    <span asp-validation-for="CityId"
+                          class="text-sm text-error"></span>
+                </div>
+
+                <div class="md:col-span-2">
+                    <label asp-for="FullAddress"
+                           class="block text-sm font-medium text-on-surface mb-2">
+                        Açık Adres
+                    </label>
+
+                    <textarea asp-for="FullAddress"
+                              rows="3"
+                              placeholder="Transfer merkezinin açık adresini giriniz."
+                              class="w-full px-4 py-3 rounded-lg border border-outline-variant bg-surface text-on-surface focus:outline-none focus:ring-2 focus:ring-primary"></textarea>
+
+                    <span asp-validation-for="FullAddress"
+                          class="text-sm text-error"></span>
+                </div>
+
+                <div class="md:col-span-2">
+                    <label class="inline-flex items-center gap-3 cursor-pointer">
+                        <input asp-for="IsActive"
+                               type="checkbox"
+                               class="w-4 h-4 rounded border-outline-variant text-primary focus:ring-primary" />
+
+                        <span class="text-sm font-medium text-on-surface">
+                            Transfer merkezi aktif
+                        </span>
+                    </label>
+                </div>
+
+            </div>
+
+            <div class="flex justify-end gap-3 mt-8 pt-6 border-t border-outline-variant/30">
+
+                <a asp-area="Admin"
+                   asp-controller="TransferCenter"
+                   asp-action="Index"
+                   class="px-5 py-3 rounded-lg border border-outline-variant text-on-surface hover:bg-surface-container-low transition">
+                    Vazgeç
+                </a>
+
+                <button type="submit"
+                        class="px-5 py-3 rounded-lg bg-primary text-on-primary font-medium hover:opacity-90 transition">
+                    Değişiklikleri Kaydet
+                </button>
+
+            </div>
+
+        </form>
+    </section>
+</main>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

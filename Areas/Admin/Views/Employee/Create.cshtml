@@ -1,0 +1,265 @@
+﻿@model DtoLayer.DTOs.EmployeeDtos.CreateEmployeeDto
+
+@{
+    ViewData["Title"] = "Yeni Personel Ekle";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+
+    var branches = ViewBag.Branches as IEnumerable<DtoLayer.DTOs.EmployeeDtos.BranchSelectDto>
+                   ?? Enumerable.Empty<DtoLayer.DTOs.EmployeeDtos.BranchSelectDto>();
+}
+
+<main class="ml-64 pt-20 px-8 pb-12">
+
+    <!-- Page Header -->
+    <div class="mb-8">
+        <a asp-area="Admin"
+           asp-controller="Employee"
+           asp-action="Index"
+           class="text-sm text-primary hover:underline">
+            ← Personel Listesine Dön
+        </a>
+
+        <h1 class="text-2xl font-bold text-on-surface mt-4">
+            Yeni Personel Ekle
+        </h1>
+
+        <p class="text-sm text-on-surface-variant mt-1">
+            Yeni personelin hesap ve görev bilgilerini giriniz.
+        </p>
+    </div>
+
+    <form asp-area="Admin"
+          asp-controller="Employee"
+          asp-action="Create"
+          method="post"
+          class="max-w-4xl">
+
+        @Html.AntiForgeryToken()
+
+        <div asp-validation-summary="ModelOnly"
+             class="mb-6 text-sm text-red-600">
+        </div>
+
+        <!-- Account Information -->
+        <section class="rounded-2xl bg-surface-container-lowest border border-outline-variant/30 shadow-sm p-6 mb-6">
+
+            <h2 class="text-lg font-semibold text-on-surface mb-1">
+                Hesap Bilgileri
+            </h2>
+
+            <p class="text-sm text-on-surface-variant mb-6">
+                Personelin sisteme giriş yaparken kullanacağı bilgiler.
+            </p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+
+                <div>
+                    <label asp-for="FullName"
+                           class="block text-sm font-medium text-on-surface mb-2">
+                        Ad Soyad
+                    </label>
+
+                    <input asp-for="FullName"
+                           placeholder="Ad ve soyad"
+                           class="w-full rounded-xl border border-outline-variant px-4 py-3 bg-surface focus:outline-none focus:ring-2 focus:ring-primary/30" />
+
+                    <span asp-validation-for="FullName"
+                          class="text-xs text-red-600"></span>
+                </div>
+
+                <div>
+                    <label asp-for="Email"
+                           class="block text-sm font-medium text-on-surface mb-2">
+                        E-posta
+                    </label>
+
+                    <input asp-for="Email"
+                           type="email"
+                           placeholder="ornek@mail.com"
+                           class="w-full rounded-xl border border-outline-variant px-4 py-3 bg-surface focus:outline-none focus:ring-2 focus:ring-primary/30" />
+
+                    <span asp-validation-for="Email"
+                          class="text-xs text-red-600"></span>
+                </div>
+
+                <div>
+                    <label asp-for="PhoneNumber"
+                           class="block text-sm font-medium text-on-surface mb-2">
+                        Telefon Numarası
+                    </label>
+
+                    <input asp-for="PhoneNumber"
+                           placeholder="05XX XXX XX XX"
+                           class="w-full rounded-xl border border-outline-variant px-4 py-3 bg-surface focus:outline-none focus:ring-2 focus:ring-primary/30" />
+
+                    <span asp-validation-for="PhoneNumber"
+                          class="text-xs text-red-600"></span>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Employee Information -->
+        <section class="rounded-2xl bg-surface-container-lowest border border-outline-variant/30 shadow-sm p-6 mb-6">
+
+            <h2 class="text-lg font-semibold text-on-surface mb-1">
+                Personel Bilgileri
+            </h2>
+
+            <p class="text-sm text-on-surface-variant mb-6">
+                Personelin kurum içindeki görev ve şube bilgileri.
+            </p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+
+                <div>
+                    <label asp-for="EmployeeNumber"
+                           class="block text-sm font-medium text-on-surface mb-2">
+                        Personel Numarası
+                    </label>
+
+                    <input asp-for="EmployeeNumber"
+                           placeholder="Örn: EMP-001"
+                           class="w-full rounded-xl border border-outline-variant px-4 py-3 bg-surface focus:outline-none focus:ring-2 focus:ring-primary/30" />
+
+                    <span asp-validation-for="EmployeeNumber"
+                          class="text-xs text-red-600"></span>
+                </div>
+
+                <div>
+                    <label asp-for="Position"
+                           class="block text-sm font-medium text-on-surface mb-2">
+                        Pozisyon
+                    </label>
+
+                    <input asp-for="Position"
+                           placeholder="Örn: Şube Personeli"
+                           class="w-full rounded-xl border border-outline-variant px-4 py-3 bg-surface focus:outline-none focus:ring-2 focus:ring-primary/30" />
+
+                    <span asp-validation-for="Position"
+                          class="text-xs text-red-600"></span>
+                </div>
+
+                <div>
+                    <label asp-for="BranchId"
+                           class="block text-sm font-medium text-on-surface mb-2">
+                        Bağlı Olduğu Şube
+                    </label>
+
+                    <select asp-for="BranchId"
+                            class="w-full rounded-xl border border-outline-variant px-4 py-3 bg-surface focus:outline-none focus:ring-2 focus:ring-primary/30">
+
+                        <option value="">Şube seçiniz</option>
+
+                        @foreach (var branch in branches)
+                        {
+                            <option value="@branch.Id">
+                                @branch.Name - @branch.CityName
+                            </option>
+                        }
+                    </select>
+
+                    <span asp-validation-for="BranchId"
+                          class="text-xs text-red-600"></span>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Password Information -->
+        <section class="rounded-2xl bg-surface-container-lowest border border-outline-variant/30 shadow-sm p-6 mb-6">
+
+            <h2 class="text-lg font-semibold text-on-surface mb-1">
+                Giriş Şifresi
+            </h2>
+
+            <p class="text-sm text-on-surface-variant mb-6">
+                Personelin ilk girişte kullanacağı şifreyi belirleyiniz.
+            </p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+
+                <div>
+                    <label asp-for="Password"
+                           class="block text-sm font-medium text-on-surface mb-2">
+                        Şifre
+                    </label>
+
+                    <input asp-for="Password"
+                           type="password"
+                           placeholder="En az 8 karakter"
+                           autocomplete="new-password"
+                           class="w-full rounded-xl border border-outline-variant px-4 py-3 bg-surface focus:outline-none focus:ring-2 focus:ring-primary/30" />
+
+                    <span asp-validation-for="Password"
+                          class="text-xs text-red-600"></span>
+                </div>
+
+                <div>
+                    <label asp-for="ConfirmPassword"
+                           class="block text-sm font-medium text-on-surface mb-2">
+                        Şifre Tekrarı
+                    </label>
+
+                    <input asp-for="ConfirmPassword"
+                           type="password"
+                           placeholder="Şifreyi tekrar giriniz"
+                           autocomplete="new-password"
+                           class="w-full rounded-xl border border-outline-variant px-4 py-3 bg-surface focus:outline-none focus:ring-2 focus:ring-primary/30" />
+
+                    <span asp-validation-for="ConfirmPassword"
+                          class="text-xs text-red-600"></span>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Status -->
+        <section class="rounded-2xl bg-surface-container-lowest border border-outline-variant/30 shadow-sm p-6 mb-6">
+
+            <div class="flex items-center justify-between gap-4">
+                <div>
+                    <h2 class="font-semibold text-on-surface">
+                        Personel Durumu
+                    </h2>
+
+                    <p class="text-sm text-on-surface-variant mt-1">
+                        Personelin başlangıç durumunu belirleyiniz.
+                    </p>
+                </div>
+
+                <label class="flex items-center gap-3 cursor-pointer">
+                    <input asp-for="IsActive"
+                           type="checkbox"
+                           class="w-5 h-5 accent-primary" />
+
+                    <span class="text-sm font-medium text-on-surface">
+                        Aktif
+                    </span>
+                </label>
+            </div>
+        </section>
+
+        <!-- Buttons -->
+        <div class="flex flex-col sm:flex-row justify-end gap-3">
+
+            <a asp-area="Admin"
+               asp-controller="Employee"
+               asp-action="Index"
+               class="px-6 py-3 rounded-xl border border-outline-variant text-on-surface font-medium text-center hover:bg-surface-container-low transition">
+                Vazgeç
+            </a>
+
+            <button type="submit"
+                    class="px-6 py-3 rounded-xl bg-primary text-white font-medium hover:opacity-90 transition">
+                Personeli Oluştur
+            </button>
+
+        </div>
+
+    </form>
+</main>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

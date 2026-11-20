@@ -1,0 +1,130 @@
+﻿@using DtoLayer.DTOs.CargoDtos
+@using EntityLayer.Entities.Enums
+@model List<CargoListDto>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_TrackingLayout.cshtml";
+}
+@section Styles {
+    <style>
+        .tracking-page .font-body-lg,
+        .tracking-page .font-headline-md,
+        .tracking-page .font-headline-xl,
+        .tracking-page .font-status-label {
+            font-family: 'Hanken Grotesk', sans-serif;
+        }
+
+        .tracking-page .text-body-lg {
+            font-size: 18px;
+            line-height: 28px;
+            font-weight: 400;
+        }
+
+        .tracking-page .text-headline-md {
+            font-size: 24px;
+            line-height: 32px;
+            font-weight: 600;
+        }
+
+        .tracking-page .text-headline-xl {
+            font-size: 40px;
+            line-height: 48px;
+            letter-spacing: -0.02em;
+            font-weight: 700;
+        }
+
+        .tracking-page .text-status-label {
+            font-size: 13px;
+            line-height: 18px;
+            font-weight: 600;
+        }
+    </style>
+}
+
+<main class="tracking-page flex-grow max-w-container-max-width mx-auto w-full px-margin-mobile md:px-gutter py-section-padding">
+    <!-- Header Section -->
+    <div class="text-center mb-stack-lg">
+        <h1 class="font-headline-xl text-headline-xl text-on-background mb-4">Kargo Takip</h1>
+        <p class="font-body-lg text-body-lg text-on-surface-variant">Takip numaranızı girerek gönderinizin güncel durumunu görüntüleyebilirsiniz.</p>
+    </div>
+    <!-- Search Card -->
+    <div class="bg-white rounded-lg shadow-sm border border-outline-variant p-6 md:p-8 max-w-3xl mx-auto mb-section-padding relative overflow-hidden">
+        <div class="absolute -right-16 -top-16 opacity-5 pointer-events-none">
+            <span class="material-symbols-outlined text-[200px] text-primary">local_shipping</span>
+        </div>
+        <div class="flex items-center gap-3 mb-6 relative z-10">
+            <div class="w-12 h-12 rounded-full bg-surface-container flex items-center justify-center text-primary">
+                <span class="material-symbols-outlined">inventory_2</span>
+            </div>
+            <h2 class="font-headline-md text-headline-md text-on-background">Kargo Takip Numarası</h2>
+        </div>
+        <form class="flex flex-col md:flex-row gap-4 relative z-10" onsubmit="event.preventDefault();">
+            <input class="flex-grow border border-outline-variant rounded-DEFAULT px-4 py-3 font-body-md text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-shadow bg-surface-bright placeholder:text-outline h-[48px]" placeholder="Örn: CGT2026001458" type="text" />
+            <button class="bg-secondary-container text-on-primary px-8 py-3 rounded-DEFAULT font-semibold flex items-center justify-center gap-2 hover:bg-opacity-90 transition-opacity h-[48px] whitespace-nowrap shadow-sm hover:shadow-md" type="submit">
+                <span class="material-symbols-outlined text-sm font-bold">search</span>
+                Gönderiyi Sorgula
+            </button>
+        </form>
+    </div>
+    <!-- Recent Tracking & Help Section Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+        <!-- Left Column: Recent Shipments -->
+        <div class="lg:col-span-12">
+            <h3 class="font-headline-md text-headline-md text-on-background mb-stack-md">Son Sorgulanan Gönderiler</h3>
+            <div class="flex flex-col gap-4">
+
+                @foreach(var item in Model)
+                {
+                    <div class="bg-white rounded-lg border border-outline-variant p-5 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 hover:shadow-sm transition-shadow group cursor-pointer border-l-4 border-l-surface-tint">
+                        <div>
+                            <div class="flex items-center gap-3 mb-2">
+                                <span class="font-body-md text-body-md font-bold text-on-background">@item.TrackCode</span>
+                                <span class="bg-surface-container-high text-primary-container px-2 py-1 rounded-full font-status-label text-status-label flex items-center gap-1">
+                                    <span class="material-symbols-outlined text-[14px]">local_shipping</span>
+                                    @item.CargoStatus
+                                </span>
+                            </div>
+                            <div class="flex items-center gap-2 text-on-surface-variant font-body-md text-body-md">
+                                <span>@item.OriginCity</span>
+                                <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                                <span>@item.DestinationCity</span>
+                            </div>
+                        </div>
+                        <div class="text-right md:text-right text-left w-full md:w-auto mt-2 md:mt-0 pt-4 md:pt-0 border-t border-outline-variant md:border-none">
+
+                            @if (item.CargoStatus == CargoStatus.Delivered && item.ActualDeliveryDate.HasValue)
+                            {
+                                <div class="text-on-surface-variant text-sm mb-1">
+                                    Gerçekleşen Teslimat
+                                </div>
+
+                                <div class="font-body-md text-body-md font-bold text-on-background">
+                                    @item.ActualDeliveryDate.Value.ToString("dd MMMM yyyy")
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="text-on-surface-variant text-sm mb-1">
+                                    Tahmini Teslimat
+                                </div>
+
+                                <div class="font-body-md text-body-md font-bold text-on-background">
+                                    @item.EstimatedArrivalDate.ToString("dd MMMM yyyy")
+                                </div>
+                            }
+
+                            @if (item.LastMovementDate.HasValue)
+                            {
+                                <div class="text-on-surface-variant text-sm mt-2">
+                                    Son İşlem: @item.LastMovementDate.Value.ToString("dd.MM.yyyy HH:mm")
+                                </div>
+                            }
+
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</main>
+

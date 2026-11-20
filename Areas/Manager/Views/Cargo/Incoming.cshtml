@@ -1,0 +1,258 @@
+﻿@using EntityLayer.Entities.Enums
+@model List<DtoLayer.DTOs.CargoDtos.IncomingCargoDto>
+
+@{
+    ViewData["Title"] = "Şubeye Gelen Kargolar";
+    Layout = "~/Views/Shared/_ManagerLayout.cshtml";
+}
+
+
+
+<div class="ml-64 pt-16 min-h-screen bg-[#f8f9ff] p-8">
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="mb-6 rounded-xl border border-green-200 bg-green-50 px-5 py-4 text-sm font-medium text-green-700">
+            @TempData["SuccessMessage"]
+        </div>
+    }
+    <div class="mb-8">
+        <h1 class="text-2xl font-bold text-gray-800">Şubeye Gelen Kargolar</h1>
+        <p class="text-sm text-gray-500 mt-2">
+            Şubenize ulaşması beklenen ve ulaşmış olan kargoları buradan takip edebilirsiniz.
+        </p>
+    </div>
+
+    <!-- İstatistik -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-7">
+        <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+            <p class="text-sm text-gray-500">Toplam Gelen Kargo</p>
+            <h2 class="text-3xl font-bold text-gray-800 mt-2">
+                @Model.Count
+            </h2>
+        </div>
+
+        <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+            <p class="text-sm text-gray-500">Beklenen Kargo</p>
+            <h2 class="text-3xl font-bold text-blue-600 mt-2">
+                @Model.Count(x => x.CargoStatus != EntityLayer.Entities.Enums.CargoStatus.Delivered)
+            </h2>
+        </div>
+    </div>
+
+    <!-- Tablo -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-100">
+
+        <div class="p-6 border-b border-gray-100 flex flex-col md:flex-row justify-between gap-4">
+            <div>
+                <h2 class="text-lg font-semibold text-gray-800">Gelen Kargo Listesi</h2>
+                <p class="text-sm text-gray-500 mt-1">
+                    Şubenizin varış noktası olduğu kargolar
+                </p>
+            </div>
+
+            <div class="relative">
+                <input type="text"
+                       id="incomingSearch"
+                       placeholder="Takip kodu veya müşteri ara..."
+                       class="w-full md:w-80 border border-gray-200 rounded-lg py-2.5 px-4 text-sm focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-400" />
+            </div>
+        </div>
+
+        <div class="overflow-x-auto">
+            <table class="w-full text-sm text-left">
+                <thead class="bg-gray-50 text-gray-500 uppercase text-xs">
+                    <tr>
+                        <th class="px-6 py-4">Takip Kodu</th>
+                        <th class="px-6 py-4">Gönderici</th>
+                        <th class="px-6 py-4">Alıcı</th>
+                        <th class="px-6 py-4">Çıkış Şubesi</th>
+                        <th class="px-6 py-4">Kargo Tipi</th>
+                        <th class="px-6 py-4">Durum</th>
+                        <th class="px-6 py-4">Tahmini Varış</th>
+                        <th class="px-6 py-4">İşlem</th>
+                    </tr>
+                </thead>
+
+                <tbody id="incomingTable" class="divide-y divide-gray-100">
+
+                    @foreach (var item in Model)
+                    {
+                        var (statusText, statusClass) = item.CargoStatus switch
+                        {
+                            EntityLayer.Entities.Enums.CargoStatus.Created => ("Oluşturuldu", "bg-gray-100 text-gray-700"),
+                            EntityLayer.Entities.Enums.CargoStatus.AtOriginBranch => ("Çıkış Şubesinde", "bg-blue-100 text-blue-700"),
+                            EntityLayer.Entities.Enums.CargoStatus.InTransferCenter => ("Transfer Merkezinde", "bg-purple-100 text-purple-700"),
+                            EntityLayer.Entities.Enums.CargoStatus.AtDestinationBranch => ("Varış Şubesinde", "bg-indigo-100 text-indigo-700"),
+                            EntityLayer.Entities.Enums.CargoStatus.OutForDelivery => ("Dağıtımda", "bg-orange-100 text-orange-700"),
+                            EntityLayer.Entities.Enums.CargoStatus.Delivered => ("Teslim Edildi", "bg-green-100 text-green-700"),
+                            EntityLayer.Entities.Enums.CargoStatus.DeliveryFailed => ("Teslim Edilemedi", "bg-red-100 text-red-700"),
+                            EntityLayer.Entities.Enums.CargoStatus.ReturnInProgress => ("İade Sürecinde", "bg-yellow-100 text-yellow-700"),
+                            EntityLayer.Entities.Enums.CargoStatus.ReturnedToSender => ("Göndericiye İade Edildi", "bg-gray-200 text-gray-700"),
+                            _ => ("Bilinmiyor", "bg-gray-100 text-gray-700")
+                        };
+
+                        var cargoTypeText = item.CargoType switch
+                        {
+                            EntityLayer.Entities.Enums.CargoType.Normal => "Normal",
+                            EntityLayer.Entities.Enums.CargoType.Fragile => "Kırılabilir",
+                            EntityLayer.Entities.Enums.CargoType.Heavy => "Ağır",
+                            _ => "Bilinmiyor"
+                        };
+
+                        EntityLayer.Entities.Enums.CargoStatus? nextStatus = item.CargoStatus switch
+                        {
+                            EntityLayer.Entities.Enums.CargoStatus.InTransferCenter
+                            => EntityLayer.Entities.Enums.CargoStatus.AtDestinationBranch,
+
+                            EntityLayer.Entities.Enums.CargoStatus.AtDestinationBranch
+                            => EntityLayer.Entities.Enums.CargoStatus.OutForDelivery,
+
+                           
+
+                            EntityLayer.Entities.Enums.CargoStatus.DeliveryFailed
+                            => EntityLayer.Entities.Enums.CargoStatus.OutForDelivery,
+
+                            _ => null
+                        };
+
+                        string actionText = item.CargoStatus switch
+                        {
+                            EntityLayer.Entities.Enums.CargoStatus.InTransferCenter
+                            => "Şubeye Ulaştı",
+
+                            EntityLayer.Entities.Enums.CargoStatus.AtDestinationBranch
+                            => "Dağıtıma Çıkar",
+
+                        
+
+                            EntityLayer.Entities.Enums.CargoStatus.DeliveryFailed
+                            => "Yeniden Dağıtıma Çıkar",
+
+                            _ => string.Empty
+                        };
+
+                        <tr class="hover:bg-gray-50 transition cargo-row">
+                            <td class="px-6 py-4 font-semibold text-blue-600">
+                                @item.TrackCode
+                            </td>
+
+                            <td class="px-6 py-4 text-gray-700">
+                                @item.SenderFullName
+                            </td>
+
+                            <td class="px-6 py-4 text-gray-700">
+                                @item.ReceiverFullName
+                            </td>
+
+                            <td class="px-6 py-4 text-gray-700">
+                                @item.OriginBranchName
+                            </td>
+
+                            <td class="px-6 py-4 text-gray-700">
+                                @cargoTypeText
+                            </td>
+
+                            <td class="px-6 py-4">
+                                <span class="px-3 py-1 rounded-full text-xs font-medium @statusClass">
+                                    @statusText
+                                </span>
+                            </td>
+
+                            <td class="px-6 py-4 text-gray-600 whitespace-nowrap">
+                                @item.EstimatedArrivalDate.ToString("dd.MM.yyyy")
+                            </td>
+
+                            <td class="px-6 py-4">
+                                @if (item.CargoStatus == CargoStatus.OutForDelivery)
+                                {
+                                    <div class="flex gap-2">
+                                        <a asp-area="Manager"
+                                           asp-controller="Cargo"
+                                           asp-action="CompleteDelivery"
+                                           asp-route-cargoId="@item.Id"
+                                           class="text-green-600 hover:text-green-800 font-semibold">
+                                            Teslimatı Tamamla
+                                        </a>
+
+                                        <a asp-area="Manager"
+                                           asp-controller="Cargo"
+                                           asp-action="DeliveryFailed"
+                                           asp-route-cargoId="@item.Id"
+                                           class="text-red-600 hover:text-red-800 font-semibold">
+                                            Teslim Edilemedi
+                                        </a>
+                                    </div>
+                                }
+                                else if (nextStatus.HasValue)
+                                {
+                                    <form asp-area="Manager"
+                                          asp-controller="Cargo"
+                                          asp-action="UpdateStatus"
+                                          method="post">
+
+                                        <input type="hidden" name="cargoId" value="@item.Id" />
+
+                                        <input type="hidden"
+                                               name="newStatus"
+                                               value="@((int)nextStatus.Value)" />
+
+                                        <button type="submit"
+                                                class="px-3 py-2 rounded-lg bg-blue-600 text-white text-xs font-medium hover:bg-blue-700 transition whitespace-nowrap">
+                                            @actionText
+                                        </button>
+                                    </form>
+                                }
+                                else
+                                {
+                                    <span class="text-xs text-gray-400">İşlem gerekmiyor</span>
+                                }
+                            </td>
+                        </tr>
+                    }
+
+                    @if (!Model.Any())
+                    {
+                        <tr>
+                            <td colspan="8" class="px-6 py-12 text-center text-gray-500">
+                                <span class="material-symbols-outlined text-4xl text-gray-300 block mb-2">
+                                    inventory_2
+                                </span>
+                                Şubenize gelen kargo bulunmuyor.
+                            </td>
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+        </div>
+
+        <div id="incomingNoResult" class="hidden p-8 text-center text-gray-500">
+            Aramanızla eşleşen kargo bulunamadı.
+        </div>
+
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        const incomingSearch = document.getElementById("incomingSearch");
+
+        incomingSearch.addEventListener("input", function () {
+            const searchValue = this.value.toLocaleLowerCase("tr-TR");
+            const rows = document.querySelectorAll("#incomingTable .cargo-row");
+            let visibleCount = 0;
+
+            rows.forEach(row => {
+                const rowText = row.innerText.toLocaleLowerCase("tr-TR");
+                const isVisible = rowText.includes(searchValue);
+
+                row.style.display = isVisible ? "" : "none";
+
+                if (isVisible) visibleCount++;
+            });
+
+            document.getElementById("incomingNoResult")
+                .classList.toggle("hidden", visibleCount > 0);
+        });
+    </script>
+}
