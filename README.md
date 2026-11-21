@@ -367,10 +367,6 @@ CargoTrack'in kullanıcı arayüzleri ve operasyonel ekranları bu bölümde gö
 ![Home](images/home.png)
 ![Tracking](images/Tracking.png)
 
-### Giriş ve Kayıt Ekranları
-![Login](images/Login.png)
-
-
 ### Admin Paneli
 ![Admin1](images/Admin1.png)
 ![Admin2](images/Admin2.png)
@@ -394,6 +390,9 @@ CargoTrack'in kullanıcı arayüzleri ve operasyonel ekranları bu bölümde gö
 ![User2](images/User2.png)
 ![User3](images/User3.png)
 ![User4](images/User4.png)
+
+### Veritabanı İlişkileri - Database Diagram
+![Entity ve İlişkiler](images/sql1.png)
 ---
 
 # 🎓 Proje Hakkında
