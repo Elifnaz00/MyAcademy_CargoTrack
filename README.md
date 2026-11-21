@@ -314,6 +314,7 @@ DTO sınıfları sayesinde veritabanı entity'leri ile kullanıcı arayüzünde 
 - DTO Pattern
 - Separation of Concerns
 - Code First yaklaşımı
+- Global Exception Handling
 
 ---
 
@@ -351,6 +352,7 @@ Uygulamada:
 - Kullanıcı ve personel bilgilerinin ilişkilendirilmesi,
 - FluentValidation ve Data Annotations ile veri doğrulama,
 - Entity ilişkilerinin ve veritabanı kısıtlarının yapılandırılması
+- Global Exception Handling ile uygulama genelindeki beklenmeyen hataların merkezi olarak yönetilmesi
 
 gibi mekanizmalar kullanılmaktadır.
 
