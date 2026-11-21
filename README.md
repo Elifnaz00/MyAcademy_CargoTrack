@@ -361,8 +361,6 @@ Bu yapı, kullanıcıların yalnızca yetkili oldukları alanlara erişmesini ve
 
 # 📸 Proje Ekran Görüntüleri
 
-CargoTrack'in kullanıcı arayüzleri ve operasyonel ekranları bu bölümde gösterilecektir.
-
 ### Genel Kullanıcı Arayüzü
 ![Home](images/home.png)
 ![Tracking](images/Tracking.png)
