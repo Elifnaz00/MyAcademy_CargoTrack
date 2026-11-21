@@ -364,23 +364,36 @@ Bu yapı, kullanıcıların yalnızca yetkili oldukları alanlara erişmesini ve
 CargoTrack'in kullanıcı arayüzleri ve operasyonel ekranları bu bölümde gösterilecektir.
 
 ### Genel Kullanıcı Arayüzü
-*Ekran görüntüleri eklenecektir.*
+![Home](images/home.png)
+![Tracking](images/Tracking.png)
 
 ### Giriş ve Kayıt Ekranları
-*Ekran görüntüleri eklenecektir.*
+![Login](images/Login.png)
 
-### Kargo Takip Ekranı
-*Ekran görüntüleri eklenecektir.*
 
 ### Admin Paneli
-*Ekran görüntüleri eklenecektir.*
+![Admin1](images/Admin1.png)
+![Admin2](images/Admin2.png)
+![Admin3](images/Admin3.png)
+![Admin4](images/Admin4.png)
+![Admin5](images/Admin5.png)
+![Admin6](images/Admin6.png)
+![Admin7](images/Admin7.png)
+![Admin8](images/Admin8.png)
 
 ### Manager Paneli
-*Ekran görüntüleri eklenecektir.*
+![Manager1](images/Manager1.png)
+![Manager2](images/Manager2.png)
+![Manager3](images/Manager3.png)
+![Manager4](images/Manager4.png)
+![Manager5](images/Manager5.png)
+![Manager6](images/Manager6.png)
 
 ### Müşteri Paneli
-*Ekran görüntüleri eklenecektir.*
-
+![User1](images/User1.png)
+![User2](images/User2.png)
+![User3](images/User3.png)
+![User4](images/User4.png)
 ---
 
 # 🎓 Proje Hakkında
