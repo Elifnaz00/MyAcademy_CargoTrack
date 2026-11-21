@@ -395,26 +395,6 @@ CargoTrack'in kullanıcı arayüzleri ve operasyonel ekranları bu bölümde gö
 ![Entity ve İlişkiler](images/sql1.png)
 ---
 
-# 🎓 Proje Hakkında
-
-CargoTrack, ASP.NET Core MVC ve N-Katmanlı Mimari kullanılarak geliştirilmiş bir portföy ve öğrenme projesidir.
-
-Proje geliştirme sürecinde yalnızca temel CRUD işlemlerine odaklanılmamış; gerçek bir kargo firmasının operasyonel ihtiyaçları dikkate alınarak kargo yaşam döngüsü, şube yönetimi, transfer süreçleri, teslimat işlemleri ve rol bazlı kullanıcı yönetimi gibi farklı iş alanları bir araya getirilmiştir.
-
-Bu proje ile özellikle aşağıdaki konularda uygulamalı deneyim kazanılması hedeflenmiştir:
-
-- ASP.NET Core MVC geliştirme
-- N-Katmanlı Mimari tasarımı
-- Entity Framework Core ve Code First
-- ASP.NET Core Identity
-- Rol bazlı yetkilendirme
-- Repository ve Service yapıları
-- DTO kullanımı
-- İş kurallarının yönetimi
-- Veritabanı ilişkilerinin tasarlanması
-- Git ve GitHub ile versiyon kontrolü
-
----
 
 # 👩‍💻 Geliştirici
 
